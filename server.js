@@ -31,7 +31,7 @@ nextApp.prepare().then(() => {
   });
 });
 //we're calling app.all because all pages in next.js are SSR(Server Side Rendered)
-//if we don't type app.all, the files inside the pages folder won't wrk
+//if we don't type app.all, the files inside the pages folder won't work
 
 
 

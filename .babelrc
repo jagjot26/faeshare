@@ -1,0 +1,5 @@
+//styled-components won't work without this file
+{
+    "presets": ["next/babel"],
+    "plugins": [["styled-components", { "ssr": true }]]
+  }
