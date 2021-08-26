@@ -50,9 +50,21 @@ function login() {
   return (
     <>
       <Container>
-        <Heading>FaeShare</Heading>
-        <Subheading>
-          A place where everyone gets their fair share of attention.
+        <h1
+          style={{
+            fontSize: "3rem",
+            fontFamily: "Poppins",
+            fontWeight: "600",
+            marginBottom: "-0.1rem",
+          }}
+        >
+          Log In
+        </h1>
+        <Heading fontSize={"2.6rem"} fontWeight={"600"}>
+          FaeShare
+        </Heading>
+        <Subheading fontSize={"1.7rem"}>
+          Get your fair share of attention.
         </Subheading>
         <LoginBox>
           <Input
@@ -104,7 +116,7 @@ function login() {
 export default login;
 
 const Container = styled.div`
-  padding-top: 4rem;
+  padding-top: 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,7 +127,7 @@ const Container = styled.div`
 const LoginBox = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 2.3rem;
+  margin-top: 1.2rem;
   background: white;
   border-radius: 20px;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
@@ -124,7 +136,7 @@ const LoginBox = styled.div`
     0 100px 80px rgba(0, 0, 0, 0.12);
 
   height: 59vh;
-  width: 36vw;
+  width: 31vw;
   min-width: 24rem;
 `;
 

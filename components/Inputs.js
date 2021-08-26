@@ -23,7 +23,30 @@ export const Input = styled.input`
   }
 `;
 
+export const CustomInput = styled.input`
+  font-size: 1.18rem;
+  font-weight: 400;
+  outline: none;
+  padding: 18px;
+  margin: 1.6rem 2.2rem 0 2.2rem;
+  border: 1.5px solid #f0e6ff;
+  color: black;
+  border-radius: 10px;
+  min-width: 21rem;
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #8f85de;
+    opacity: 0.46; /* Firefox */
+  }
+
+  :focus {
+    border: 2px solid #a097ea;
+  }
+`;
+
 export const Password = styled.div`
+  background-color: ${(props) =>
+    props.bgColor ? props.bgColor : "transparent"};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,7 +54,8 @@ export const Password = styled.div`
   border-radius: 10px;
   padding: 18px;
   margin: 2.2rem 2.2rem 0 2.2rem;
-  min-width: 14rem;
+  margin-top: ${(props) => (props.marginTop ? props.marginTop : "2.2rem")};
+  min-width: ${(props) => (props.minWidth ? props.minWidth : "14rem")};
   max-width: 40rem;
   border: 1.5px solid #f0e6ff;
   :focus-within {
