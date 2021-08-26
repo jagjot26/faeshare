@@ -1,5 +1,7 @@
 import App from "next/app";
 import axios from "axios";
+import { Provider } from "react-redux";
+import { store } from "../redux/store";
 import { parseCookies, destroyCookie } from "nookies";
 //nookies is built for next js to retrieve cookies from server side
 import baseUrl from "../utils/baseUrl";
@@ -11,7 +13,10 @@ import "semantic-ui-css/semantic.min.css"; //semantic ui css package
 function MyApp({ Component, pageProps }) {
   return (
     <Layout {...pageProps}>
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
+
       {/*here, we could've also done: <Component posts={pageProps.posts}></Component> */}
     </Layout>
   );
@@ -26,7 +31,6 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
   //we set cookie name to token in authUser utility;
   let pageProps = {};
 
-
   const protectedRoutes =
     ctx.pathname === "/" ||
     ctx.pathname === "/[username]" ||
@@ -39,7 +43,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
   if (!token) {
     console.log(ctx.pathname);
 
-    protectedRoutes && redirectUser(ctx, "/login");
+    protectedRoutes && redirectUser(ctx, "/signup");
     //this means if there are protected routes in pathname, then move user to /login page since no token
   } else {
     //if TOKEN EXISTS
@@ -51,7 +55,9 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     }
 
     try {
-      const res = await axios.get(`${baseUrl}/api/auth`, { headers: { Authorization: token } }); //this receives an object with user and userFollowStats
+      const res = await axios.get(`${baseUrl}/api/auth`, {
+        headers: { Authorization: token },
+      }); //this receives an object with user and userFollowStats
       const { user, userFollowStats } = res.data;
 
       if (user) !protectedRoutes && redirectUser(ctx, "/"); //this means that if the user is not in a protected route, say he's in /login or /signup, then we'll redirect him to home page since user is already logged in

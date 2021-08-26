@@ -1,0 +1,54 @@
+import styled from "styled-components";
+
+export const Input = styled.input`
+  font-size: 1.18rem;
+  font-weight: 400;
+  outline: none;
+
+  padding: 18px;
+  margin: 2.2rem 2.2rem 0 2.2rem;
+  border: 1.5px solid #f0e6ff;
+  color: black;
+  border-radius: 10px;
+  min-width: 14rem;
+  max-width: 40rem;
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #8f85de;
+    opacity: 0.46; /* Firefox */
+  }
+
+  :focus {
+    border: 2px solid #a097ea;
+  }
+`;
+
+export const Password = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 10px;
+  padding: 18px;
+  margin: 2.2rem 2.2rem 0 2.2rem;
+  min-width: 14rem;
+  max-width: 40rem;
+  border: 1.5px solid #f0e6ff;
+  :focus-within {
+    border: 1.5px solid #a097ea;
+  }
+`;
+
+export const PasswordInput = styled.input`
+  font-size: 1.18rem;
+  font-weight: 400;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: black;
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #8f85de;
+    opacity: 0.46; /* Firefox */
+  }
+`;
