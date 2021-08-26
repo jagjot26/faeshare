@@ -40,7 +40,9 @@ function signup() {
               setErrorMessage={setErrorMessage}
             />
           )}
-          {currentPage.index === 1 && <AddProfilePic />}
+          {currentPage.index === 1 && (
+            <AddProfilePic setErrorMessage={setErrorMessage} />
+          )}
         </div>
 
         <IconContainer>

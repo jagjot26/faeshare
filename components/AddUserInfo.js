@@ -6,6 +6,17 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Heading, Subheading } from "../components/Headings";
 import { CustomInput, Password, PasswordInput } from "../components/Inputs";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import { useDispatch } from "react-redux";
+import { addToUser } from "../redux/userSlice";
+import axios from "axios";
+import baseUrl from "../utils/baseUrl";
+import { CircularProgress } from "@material-ui/core";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
+
+const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/; //regex to validate username
+
+let cancel;
 
 function AddUserInfo({
   setUserData,
@@ -13,6 +24,7 @@ function AddUserInfo({
   errorMessage,
   setErrorMessage,
 }) {
+  const dispatch = useDispatch();
   const [visibility, setVisibility] = useState(false);
   const [user, setUser] = useState({
     name: "",
@@ -35,6 +47,7 @@ function AddUserInfo({
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  //useEffect for setting values from session storage for when the user swipes b/w signup pages
   useEffect(() => {
     setUser({
       name: sessionStorage.getItem("name") || "",
@@ -46,9 +59,12 @@ function AddUserInfo({
   }, []);
 
   useEffect(() => {
-    console.log(
-      `name: ${name}, email: ${email}, password: ${password}, username: ${username}`
-    );
+    console.log(`username : ${username}`);
+    username === "" ? setUsernameAvailable(false) : checkUsername();
+  }, [username]); //this will execute on first component mount and then every time username is changed
+
+  //useEffect for checking if all values have been filled
+  useEffect(() => {
     const isUser = Object.values({ name, email, password, username }).every(
       (item) => Boolean(item)
     );
@@ -56,12 +72,12 @@ function AddUserInfo({
     //every is used to test if all items in the array pass the test in the defined function. Also, Every returns a boolean value
     //isUser will be true only when all values in the array have some value assigned
     //Boolean(some_variable) returns true only when its assigned
-    console.log("are u there");
     if (isUser) {
       sessionStorage.setItem("name", name);
       sessionStorage.setItem("email", email);
       sessionStorage.setItem("password", password);
       sessionStorage.setItem("username", username);
+      dispatch(addToUser({ name, email, password, username }));
       setNextDisabled(false);
     } else {
       setNextDisabled(true);
@@ -86,6 +102,37 @@ function AddUserInfo({
   //     await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
   //   };
 
+  const checkUsername = async () => {
+    setUsernameLoading(true);
+
+    try {
+      cancel && cancel(); //this statement checks if cancel(defined at top of page) is there or has a truthy value, then we'll call cancel()
+
+      const CancelToken = axios.CancelToken; //to cancel a pending request and then we make a new request
+
+      //basically whenever we send a new request we have to check if we have another request before it pending and then we cancel it first. That'll happen when 'cancel' variable has some value assigned to it, which is what we checked in 1st line of try block
+      console.log("inside of checkUsername");
+      const res = await axios.get(`${baseUrl}/api/signup/${username}`, {
+        cancelToken: new CancelToken((canceler) => {
+          cancel = canceler; //we created a cancel variable at the top of this file
+        }),
+      }); //goes to /api/signup/:username in the backend
+
+      if (errorMessage !== "") setErrorMessage(""); //this is for resetting errorMsg
+
+      if (res.data === "Available") {
+        setUsernameAvailable(true);
+        setUser((prev) => ({ ...prev, username })); //append username property to the user's object
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("Username Not Available");
+      setUsernameAvailable(false);
+    }
+
+    setUsernameLoading(false);
+  };
+
   return (
     <>
       <Container>
@@ -107,14 +154,12 @@ function AddUserInfo({
           name="name"
           value={name}
           onChange={handleChange}
-          required
         />
         <CustomInput
           placeholder="Enter Email"
           name="email"
           value={email}
           onChange={handleChange}
-          required
         />
         <Password bgColor={"white"} minWidth={"21rem"} marginTop={"1.6rem"}>
           <PasswordInput
@@ -123,7 +168,6 @@ function AddUserInfo({
             value={password}
             onChange={handleChange}
             type={visibility ? "text" : "password"}
-            required
           />
           <div
             onClick={() => setVisibility((prev) => !prev)}
@@ -142,10 +186,25 @@ function AddUserInfo({
               if (errorMessage !== "") {
                 setErrorMessage("");
               }
+
               setUsername(e.target.value);
+              //every regex has a test method on it to test the regex against a value
+              if (regexUserName.test(e.target.value)) {
+                setUsernameAvailable(true);
+              } else {
+                setUsernameAvailable(false);
+              }
             }}
-            required
           />
+          <div>
+            {usernameLoading ? (
+              <CircularProgress size={20} />
+            ) : usernameAvailable ? (
+              <CheckCircleIcon style={{ color: "#94c65a " }} />
+            ) : (
+              <CancelIcon style={{ color: "#fe6f8a" }} />
+            )}
+          </div>
         </Username>
         {errorMessage !== "" && (
           <ErrorContainer>

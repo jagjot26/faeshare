@@ -14,6 +14,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
+    "better-react-spinkit": "^2.0.4",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "js-cookie": "^3.0.0",
