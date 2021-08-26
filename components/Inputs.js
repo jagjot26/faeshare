@@ -76,3 +76,40 @@ export const PasswordInput = styled.input`
     opacity: 0.46; /* Firefox */
   }
 `;
+
+export const SocialMedia = styled.div`
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 10px;
+  padding: 18px;
+  margin: 2.2rem 0 0 0;
+  margin-top: ${(props) => (props.marginTop ? props.marginTop : "2.2rem")};
+  min-width: ${(props) => (props.minWidth ? props.minWidth : "14rem")};
+  max-width: 40rem;
+  border: 1.5px solid #f0e6ff;
+  :focus-within {
+    border: 1.5px solid #a097ea;
+  }
+  @media only screen and (max-width: 600px) {
+    margin-top: 1rem;
+    height: 2rem;
+  }
+`;
+
+export const SocialMediaInput = styled.input`
+  font-size: 1.18rem;
+  font-weight: 400;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: black;
+  margin-left: 0.75rem;
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #8f85de;
+    opacity: 0.46; /* Firefox */
+  }
+`;

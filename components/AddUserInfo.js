@@ -72,7 +72,8 @@ function AddUserInfo({
     //every is used to test if all items in the array pass the test in the defined function. Also, Every returns a boolean value
     //isUser will be true only when all values in the array have some value assigned
     //Boolean(some_variable) returns true only when its assigned
-    if (isUser) {
+
+    if (isUser && usernameAvailable) {
       sessionStorage.setItem("name", name);
       sessionStorage.setItem("email", email);
       sessionStorage.setItem("password", password);
@@ -124,9 +125,17 @@ function AddUserInfo({
         setUsernameAvailable(true);
         setUser((prev) => ({ ...prev, username })); //append username property to the user's object
       }
+      console.log(res.data);
+      if (res.data === "Username already taken") {
+        setErrorMessage("Username Not Available");
+      }
     } catch (error) {
-      console.log(error);
-      setErrorMessage("Username Not Available");
+      if (error.response) {
+        if (error.response.status === 400) {
+          setErrorMessage("Username Not Available");
+        }
+      }
+
       setUsernameAvailable(false);
     }
 

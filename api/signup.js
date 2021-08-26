@@ -22,28 +22,40 @@ router.get("/:username", async (req, res) => {
     if (!regexUserName.test(username)) return res.status(401).send("Invalid"); //regex test for username
 
     const user = await UserModel.findOne({ username: username.toLowerCase() }); //on the backend all the usernames are converted to lower case before storing
-    if (user) return res.status(401).send("Username already taken");
+    if (user) return res.status(400).send("Username already taken");
 
     return res.status(200).send("Available");
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
     return res.status(500).send("Server error");
   }
 }); //this means /api/signup/:username
 
 router.post("/", async (req, res) => {
-  const { name, email, username, password, bio, facebook, youtube, twitter, instagram } =
-    req.body.user;
+  const {
+    name,
+    email,
+    username,
+    password,
+    bio,
+    facebook,
+    youtube,
+    twitter,
+    instagram,
+  } = req.body.user;
 
   if (!isEmail(email)) return res.status(401).send("Invalid Email");
 
-  if (password.length < 6) return res.status(401).send("Password must be atleast 6 characters");
+  if (password.length < 6)
+    return res.status(401).send("Password must be atleast 6 characters");
 
   try {
     let user;
     user = await UserModel.findOne({ email: email.toLowerCase() });
     if (user) {
-      return res.status(401).send("Another user has already registered with this email");
+      return res
+        .status(401)
+        .send("Another user has already registered with this email");
     }
 
     //---USER MODEL---
@@ -74,7 +86,11 @@ router.post("/", async (req, res) => {
     await new ProfileModel(profileFields).save();
 
     //---FOLLOWER MODEL---
-    await new FollowerModel({ user: user._id, followers: [], following: [] }).save();
+    await new FollowerModel({
+      user: user._id,
+      followers: [],
+      following: [],
+    }).save();
 
     //---NOTIFICATION MODEL---
     await new NotificationModel({ user: user._id, notifications: [] }).save();
@@ -83,10 +99,15 @@ router.post("/", async (req, res) => {
 
     //JWT
     const payload = { userId: user._id };
-    jwt.sign(payload, process.env.jwtSecret, { expiresIn: "2d" }, (err, token) => {
-      if (err) throw err;
-      res.status(200).json(token);
-    });
+    jwt.sign(
+      payload,
+      process.env.jwtSecret,
+      { expiresIn: "2d" },
+      (err, token) => {
+        if (err) throw err;
+        res.status(200).json(token);
+      }
+    );
   } catch (error) {
     console.log(error);
     return res.status(500).send("Server error");
