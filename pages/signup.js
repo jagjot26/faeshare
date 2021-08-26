@@ -9,6 +9,11 @@ import ChevronLeftRoundedIcon from "@material-ui/icons/ChevronLeftRounded";
 import styled from "styled-components";
 
 function signup() {
+  const firstUpdate = useRef(true);
+  const [animationClass, setAnimationClass] = useState(
+    `${styles.fadeinreally}`
+  );
+  const [errorMessage, setErrorMessage] = useState("");
   const arrayOfPages = [AddUserInfo, AddProfilePic];
   const [nextDisabled, setNextDisabled] = useState(true);
   const [userData, setUserData] = useState({
@@ -26,16 +31,19 @@ function signup() {
   return (
     <>
       <Container>
-        <div className={styles.fadeinreally}>
+        <div className={animationClass}>
           {currentPage.index === 0 && (
             <AddUserInfo
               setUserData={setUserData}
               setNextDisabled={setNextDisabled}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
             />
           )}
           {currentPage.index === 1 && <AddProfilePic />}
         </div>
-        <IconContainer className={styles.fadeinreally}>
+
+        <IconContainer>
           {currentPage.index > 0 && (
             <ChevronLeftRoundedIcon
               style={{
@@ -43,6 +51,7 @@ function signup() {
                 cursor: "pointer",
               }}
               onClick={() => {
+                setAnimationClass(`${styles.fadeinreally}`);
                 if (currentPage.index > 0) {
                   setCurrentPage((prev) => ({
                     index: prev.index - 1,
@@ -57,14 +66,20 @@ function signup() {
             <ChevronRightRoundedIcon
               style={{
                 fontSize: "2.6rem",
-                cursor: nextDisabled ? "not-allowed" : "pointer",
+                cursor: "pointer",
               }}
               onClick={() => {
-                if (currentPage.index !== arrayOfPages.length - 1) {
-                  setCurrentPage((prev) => ({
-                    index: prev.index + 1,
-                    value: arrayOfPages[prev.index + 1],
-                  }));
+                if (nextDisabled) {
+                  setErrorMessage("Please fill in the missing fields.");
+                }
+                if (!nextDisabled) {
+                  setAnimationClass(`${styles.fadeinlol}`);
+                  if (currentPage.index !== arrayOfPages.length - 1) {
+                    setCurrentPage((prev) => ({
+                      index: prev.index + 1,
+                      value: arrayOfPages[prev.index + 1],
+                    }));
+                  }
                 }
               }}
             />

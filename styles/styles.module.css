@@ -1,3 +1,24 @@
+@keyframes fadeinagain {
+  0% {
+    opacity: 0;
+    /* to set it to invisible at first */
+    /* transform: translateX(-10rem); */
+    /* to start it from 100px left of its actual positon */
+  }
+
+  80% {
+    /* transform: translateX(1rem); */
+    /* to move it a bit to the right before it goes back to its actual position at 100% */
+  }
+
+  100% {
+    opacity: 1;
+    /* to set it back to visible */
+    /* transform: translate(0); */
+    /* to move it back to its actual position */
+  }
+}
+
 @keyframes fadein {
   0% {
     opacity: 0;
@@ -23,7 +44,15 @@
   animation: fadein 1.3s ease-out;
 }
 
-.fadeout {
+.test {
+  min-zoom: 0;
+}
+
+.fadeinlol {
+  animation: fadeinagain 1.32s ease-out;
+}
+
+/* .fadeout {
   opacity: 0;
   transition: opacity 1s ease;
-}
+} */

@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Heading, Subheading } from "../components/Headings";
 import { CustomInput, Password, PasswordInput } from "../components/Inputs";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
-function AddUserInfo({ setUserData, setNextDisabled }) {
+function AddUserInfo({
+  setUserData,
+  setNextDisabled,
+  errorMessage,
+  setErrorMessage,
+}) {
   const [visibility, setVisibility] = useState(false);
   const [user, setUser] = useState({
     name: "",
@@ -21,6 +27,9 @@ function AddUserInfo({ setUserData, setNextDisabled }) {
   const [usernameAvailable, setUsernameAvailable] = useState(false); //to show tick sign when username is available
 
   const handleChange = (e) => {
+    if (errorMessage !== "") {
+      setErrorMessage("");
+    }
     const { name, value, files } = e.target;
 
     setUser((prev) => ({ ...prev, [name]: value }));
@@ -28,12 +37,12 @@ function AddUserInfo({ setUserData, setNextDisabled }) {
 
   useEffect(() => {
     setUser({
-      name: localStorage.getItem("name") || "",
-      email: localStorage.getItem("email") || "",
-      password: localStorage.getItem("password") || "",
+      name: sessionStorage.getItem("name") || "",
+      email: sessionStorage.getItem("email") || "",
+      password: sessionStorage.getItem("password") || "",
     });
 
-    setUsername(localStorage.getItem("username") || "");
+    setUsername(sessionStorage.getItem("username") || "");
   }, []);
 
   useEffect(() => {
@@ -49,10 +58,10 @@ function AddUserInfo({ setUserData, setNextDisabled }) {
     //Boolean(some_variable) returns true only when its assigned
     console.log("are u there");
     if (isUser) {
-      localStorage.setItem("name", name);
-      localStorage.setItem("email", email);
-      localStorage.setItem("password", password);
-      localStorage.setItem("username", username);
+      sessionStorage.setItem("name", name);
+      sessionStorage.setItem("email", email);
+      sessionStorage.setItem("password", password);
+      sessionStorage.setItem("username", username);
       setNextDisabled(false);
     } else {
       setNextDisabled(true);
@@ -98,12 +107,14 @@ function AddUserInfo({ setUserData, setNextDisabled }) {
           name="name"
           value={name}
           onChange={handleChange}
+          required
         />
         <CustomInput
           placeholder="Enter Email"
           name="email"
           value={email}
           onChange={handleChange}
+          required
         />
         <Password bgColor={"white"} minWidth={"21rem"} marginTop={"1.6rem"}>
           <PasswordInput
@@ -112,6 +123,7 @@ function AddUserInfo({ setUserData, setNextDisabled }) {
             value={password}
             onChange={handleChange}
             type={visibility ? "text" : "password"}
+            required
           />
           <div
             onClick={() => setVisibility((prev) => !prev)}
@@ -127,10 +139,28 @@ function AddUserInfo({ setUserData, setNextDisabled }) {
             name="username"
             value={username}
             onChange={(e) => {
+              if (errorMessage !== "") {
+                setErrorMessage("");
+              }
               setUsername(e.target.value);
             }}
+            required
           />
         </Username>
+        {errorMessage !== "" && (
+          <ErrorContainer>
+            <div>
+              <ErrorOutlineIcon
+                style={{
+                  fontSize: "1.31rem",
+                  color: "#fe6f8a",
+                }}
+              />
+            </div>
+
+            <ErrorText>{errorMessage}</ErrorText>
+          </ErrorContainer>
+        )}
       </Container>
     </>
   );
@@ -176,6 +206,21 @@ const UsernameInput = styled.input`
     color: #8f85de;
     opacity: 0.46; /* Firefox */
   }
+`;
+
+const ErrorText = styled.p`
+  color: #fe6f8a;
+  font-size: 1.01rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  width: 100%;
+  margin-left: 0.4rem;
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  margin-top: 2.1rem;
+  align-items: center;
 `;
 
 export default AddUserInfo;

@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useEffect } from "react";
 import HeadTags from "./HeadTags";
 import Navbar from "./Navbar";
 import nprogress from "nprogress"; //for the red progress bar at the top. We can change the color of the progress bar by opening nprogress.css in the public folder and changing the background color
@@ -19,13 +19,12 @@ function Layout({ children, user }) {
   return (
     <>
       <HeadTags />
-       {children}
+      {children}
     </>
   );
 }
 
 export default Layout;
-
 
 // {user ? (
 //     <>
@@ -72,4 +71,4 @@ export default Layout;
 //         {children}
 //       </Container>
 //     </>
-//   )} 
+//   )}
