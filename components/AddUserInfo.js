@@ -147,7 +147,7 @@ function AddUserInfo({
       <Container>
         <h1
           style={{
-            fontSize: "3rem",
+            fontSize: "2.8rem",
             fontFamily: "Poppins",
             fontWeight: "600",
             marginBottom: "-0.1rem",
@@ -197,6 +197,10 @@ function AddUserInfo({
               }
 
               setUsername(e.target.value);
+              if (username.length < 1) {
+                setUsernameAvailable(false);
+                return;
+              }
               //every regex has a test method on it to test the regex against a value
               if (regexUserName.test(e.target.value)) {
                 setUsernameAvailable(true);

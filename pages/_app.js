@@ -43,7 +43,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
   if (!token) {
     console.log(ctx.pathname);
 
-    protectedRoutes && redirectUser(ctx, "/signup");
+    protectedRoutes && redirectUser(ctx, "/login");
     //this means if there are protected routes in pathname, then move user to /login page since no token
   } else {
     //if TOKEN EXISTS

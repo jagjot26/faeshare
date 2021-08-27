@@ -4,9 +4,17 @@ import catchErrors from "./catchErrors";
 import Router from "next/router";
 import cookie from "js-cookie";
 
-export const registerUser = async (user, profilePicUrl, setError, setLoading) => {
+export const registerUser = async (
+  user,
+  profilePicUrl,
+  setError,
+  setLoading
+) => {
   try {
-    const res = await axios.post(`${baseUrl}/api/signup`, { user, profilePicUrl }); //user is the user object from frontend
+    const res = await axios.post(`${baseUrl}/api/signup`, {
+      user,
+      profilePicUrl,
+    }); //user is the user object from frontend
 
     setToken(res.data); //jwt token received in res.data from backend
   } catch (error) {
@@ -16,7 +24,7 @@ export const registerUser = async (user, profilePicUrl, setError, setLoading) =>
   setLoading(false);
 };
 
-export const loginUser = async (user, setError, setLoading) => {
+export const loginUser = async (user, setErrorMessage, setLoading) => {
   setLoading(true);
 
   try {
@@ -25,7 +33,7 @@ export const loginUser = async (user, setError, setLoading) => {
     setToken(res.data); //jwt token received in res.data from backend
   } catch (error) {
     const errorMsg = catchErrors(error);
-    setError(errorMsg);
+    setErrorMessage(errorMsg);
   }
 
   setLoading(false);

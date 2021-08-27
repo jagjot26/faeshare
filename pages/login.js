@@ -7,9 +7,14 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Heading, Subheading } from "../components/Headings";
 import { Input, Password, PasswordInput } from "../components/Inputs";
+import ErrorComponent from "../components/Error";
+import loaderGif from "../logo/chat.gif";
+import { ThreeBounce } from "better-react-spinkit";
 
 function login() {
   const [visibility, setVisibility] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -38,7 +43,7 @@ function login() {
 
   const handleSubmit = async (e) => {
     console.log(`email: ${email}, password: ${password}`);
-    // await loginUser(user, setErrorMsg, setFormLoading);
+    await loginUser(user, setErrorMessage, setLoading);
   };
 
   // useEffect(() => {
@@ -52,7 +57,7 @@ function login() {
       <Container>
         <h1
           style={{
-            fontSize: "3rem",
+            fontSize: "2.8rem",
             fontFamily: "Poppins",
             fontWeight: "600",
             marginBottom: "-0.1rem",
@@ -63,7 +68,7 @@ function login() {
         <Heading fontSize={"2.6rem"} fontWeight={"600"}>
           FaeShare
         </Heading>
-        <Subheading fontSize={"1.7rem"}>
+        <Subheading fontSize={"1.48rem"}>
           Get your fair share of attention.
         </Subheading>
         <LoginBox>
@@ -73,7 +78,7 @@ function login() {
             value={email}
             onChange={handleChange}
           />
-          <Password>
+          <Password marginTop={"1.3rem"}>
             <PasswordInput
               placeholder="Enter Password"
               name="password"
@@ -89,8 +94,12 @@ function login() {
             </div>
           </Password>
 
+          {errorMessage !== "" && (
+            <ErrorComponent errorMessage={errorMessage} />
+          )}
+
           <Button disabled={submitDisabled} onClick={handleSubmit}>
-            Log In
+            {loading ? <ThreeBounce size={9} color="#fff" /> : "Log In"}
           </Button>
           <SmallButton>Forgotten Password?</SmallButton>
           <span
@@ -150,7 +159,7 @@ const Button = styled.button`
   font-size: 1.5rem;
   font-family: "Poppins", sans-serif;
   margin: 2.2rem 2.2rem 1.5rem 2.2rem;
-  padding: 18px;
+  padding: 15px;
   font-weight: 500;
   border: none;
 
