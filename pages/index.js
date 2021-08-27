@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
+import { logoutUser } from "../utils/authUser";
 
-function Home() {
-    return (
-        <div>
-            home
-        </div>
-    )
+function Home({ user }) {
+  return <div onClick={() => logoutUser(user.email)}>home</div>;
 }
 
-export default Home
+export default Home;

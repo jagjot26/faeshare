@@ -46,11 +46,10 @@ function login() {
     await loginUser(user, setErrorMessage, setLoading);
   };
 
-  // useEffect(() => {
-  //   document.title = `Welcome Back`;
-  //   const userEmail = cookie.get("userEmail");
-  //   if (userEmail) setUser((prev) => ({ ...prev, email: userEmail }));
-  // }, []);
+  useEffect(() => {
+    const userEmail = cookie.get("userEmail");
+    if (userEmail) setUser((prev) => ({ ...prev, email: userEmail }));
+  }, []);
 
   return (
     <>

@@ -17,6 +17,10 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import mediaqueries from "../utils/mediaqueries";
 import ArrowForwardRoundedIcon from "@material-ui/icons/ArrowForwardRounded";
+import { Circle } from "better-react-spinkit";
+import uploadPic from "../utils/uploadPic";
+import { registerUser } from "../utils/authUser";
+import ErrorComponent from "./Error";
 
 function AddProfilePic() {
   const inputRef = useRef();
@@ -24,7 +28,6 @@ function AddProfilePic() {
   console.log(user);
 
   const [optionalDetails, setOptionalDetails] = useState({
-    profilePicUrl: "",
     bio: "",
     youtube: "",
     twitter: "",
@@ -32,10 +35,11 @@ function AddProfilePic() {
     facebook: "",
   });
 
-  const { profilePicUrl, bio, youtube, twitter, instagram, facebook } =
-    optionalDetails;
+  const { bio, youtube, twitter, instagram, facebook } = optionalDetails;
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -49,16 +53,25 @@ function AddProfilePic() {
 
   const submitProfile = async () => {
     let profilePicUrl;
+    setLoading(true);
     if (media !== null) {
       profilePicUrl = await uploadPic(media);
     }
 
+    console.log(profilePicUrl);
     //in case of error
     if (media !== null && !profilePicUrl) {
       return setErrorMessage("Error Uploading Image");
-    } else {
-      console.log(profilePicUrl);
     }
+    console.log(profilePicUrl);
+    console.log({ ...user, ...optionalDetails });
+
+    await registerUser(
+      { ...user, ...optionalDetails },
+      profilePicUrl,
+      setErrorMessage,
+      setLoading
+    );
   };
 
   return (
@@ -129,10 +142,15 @@ function AddProfilePic() {
           </SocialMedia>
         </div>
         {/* <CreateAccountButton>Create account</CreateAccountButton> */}
-        <ArrowRightDiv>
-          <ArrowForwardRoundedIcon
-            style={{ color: "white", fontSize: "1.8rem" }}
-          />
+        {errorMessage !== "" && <ErrorComponent errorMessage={errorMessage} />}
+        <ArrowRightDiv onClick={() => submitProfile()}>
+          {loading ? (
+            <Circle size={22} color="white" />
+          ) : (
+            <ArrowForwardRoundedIcon
+              style={{ color: "white", fontSize: "1.8rem" }}
+            />
+          )}
         </ArrowRightDiv>
       </Container>
     </>
