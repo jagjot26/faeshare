@@ -199,16 +199,18 @@ const ArrowRightDiv = styled.div`
   cursor: pointer;
   height: 4rem;
   width: 4rem;
-  margin-top: 4rem;
+  margin-top: 3.8rem;
   background-color: #6050dc;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  transition: all 0.2s ease-in;
+  transition: all 0.21s ease-in;
 
   :hover {
     background-color: #3e2fb3;
     transform: scale(1.04);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   }
 
   @media only screen and (max-width: 320px) {

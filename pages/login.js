@@ -155,7 +155,7 @@ const Button = styled.button`
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : "#6050dc"};
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.39rem;
   font-family: "Poppins", sans-serif;
   margin: 2.2rem 2.2rem 1.5rem 2.2rem;
   padding: 15px;
