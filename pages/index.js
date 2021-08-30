@@ -12,7 +12,7 @@ function Home({ user }) {
   return (
     <>
       <div onClick={() => logoutUser(user.email)}>LOGOUT USER</div>
-      <SearchIcon />
+      <SearchIcon className="h-20" />
     </>
   );
 }

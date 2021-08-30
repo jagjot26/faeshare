@@ -1,4 +1,5 @@
 import App from "next/app";
+import "../styles/tailwind-index.css";
 import axios from "axios";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
