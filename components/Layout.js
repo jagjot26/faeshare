@@ -1,5 +1,5 @@
 import React, { createRef, useEffect } from "react";
-import HeadTags from "./HeadTags";
+import Headtags from "./headtags";
 import nprogress from "nprogress"; //for the red progress bar at the top. We can change the color of the progress bar by opening nprogress.css in the public folder and changing the background color
 import Router, { useRouter } from "next/router";
 // import Search from "../Layout/Search";
@@ -17,7 +17,7 @@ function Layout({ children, user }) {
 
   return (
     <>
-      <HeadTags />
+      <Headtags />
       {children}
     </>
   );
