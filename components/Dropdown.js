@@ -19,32 +19,34 @@ function Dropdown({ user }) {
         borderRadius: "0.7rem",
       }}
     >
-      <div className="flex items-center hover:bg-gray-200 p-2 rounded-md  cursor-pointer">
-        <div>
-          <Image
-            className="rounded-full mr-3"
-            src={user.profilePicUrl}
-            alt="user avatar"
-          />
-        </div>
+      <Link href={`/${user.username}`} passHref>
+        <div className="flex items-center hover:bg-gray-200 p-2 rounded-md  cursor-pointer">
+          <div>
+            <Image
+              className="rounded-full mr-3"
+              src={user.profilePicUrl}
+              alt="user avatar"
+            />
+          </div>
 
-        <div className="ml-0.5 flex flex-col">
-          <p
-            className="text-gray-600"
-            style={{
-              fontFamily: "Roboto",
-              fontSize: "1.09rem",
-              fontWeight: "500",
-              marginBottom: "-0.19rem",
-            }}
-          >
-            {user.name}
-          </p>
-          <p className="text-gray-500" style={{ fontWeight: "400" }}>
-            My profile
-          </p>
+          <div className="ml-0.5 flex flex-col">
+            <p
+              className="text-gray-600"
+              style={{
+                fontFamily: "Roboto",
+                fontSize: "1.09rem",
+                fontWeight: "500",
+                marginBottom: "-0.19rem",
+              }}
+            >
+              {user.name}
+            </p>
+            <p className="text-gray-500" style={{ fontWeight: "400" }}>
+              My profile
+            </p>
+          </div>
         </div>
-      </div>
+      </Link>
       <span
         style={{
           height: "0.65px",
