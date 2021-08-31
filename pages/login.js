@@ -11,7 +11,7 @@ import ErrorComponent from "../components/Error";
 import loaderGif from "../logo/chat.gif";
 import { ThreeBounce } from "better-react-spinkit";
 
-function login() {
+function Login() {
   const [visibility, setVisibility] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ function login() {
     //Boolean(some_variable) returns true only when its assigned
 
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true); //basically this useEffect is called everytime a state change is triggered, i.e. a useState is called to change the vlues of name, email, password etc. Only whenn all of them have been entered is when isUser will become true and submitButton will be enabled
-  });
+  }, [email, password]);
 
   const handleSubmit = async (e) => {
     console.log(`email: ${email}, password: ${password}`);
@@ -111,7 +111,7 @@ function login() {
 
           <BottomText>
             New to FaShare?{" "}
-            <Link href="/signup">
+            <Link href="/signup" passHref>
               <BottomAnchor>Create an account.</BottomAnchor>
             </Link>
           </BottomText>
@@ -121,7 +121,7 @@ function login() {
   );
 }
 
-export default login;
+export default Login;
 
 const Container = styled.div`
   padding-top: 2.5rem;

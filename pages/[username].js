@@ -5,6 +5,7 @@ function ProfilePage({ user }) {
   return (
     <div>
       <Header user={user} />
+      <h1>Hey, there {user.name}</h1>
     </div>
   );
 }

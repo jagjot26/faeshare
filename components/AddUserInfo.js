@@ -47,6 +47,45 @@ function AddUserInfo({
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  const checkUsername = async () => {
+    setUsernameLoading(true);
+
+    try {
+      cancel && cancel(); //this statement checks if cancel(defined at top of page) is there or has a truthy value, then we'll call cancel()
+
+      const CancelToken = axios.CancelToken; //to cancel a pending request and then we make a new request
+
+      //basically whenever we send a new request we have to check if we have another request before it pending and then we cancel it first. That'll happen when 'cancel' variable has some value assigned to it, which is what we checked in 1st line of try block
+      console.log("inside of checkUsername");
+      const res = await axios.get(`${baseUrl}/api/signup/${username}`, {
+        cancelToken: new CancelToken((canceler) => {
+          cancel = canceler; //we created a cancel variable at the top of this file
+        }),
+      }); //goes to /api/signup/:username in the backend
+
+      if (errorMessage !== "") setErrorMessage(""); //this is for resetting errorMsg
+
+      if (res.data === "Available") {
+        setUsernameAvailable(true);
+        setUser((prev) => ({ ...prev, username })); //append username property to the user's object
+      }
+      console.log(res.data);
+      if (res.data === "Username already taken") {
+        setErrorMessage("Username Not Available");
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 400) {
+          setErrorMessage("Username Not Available");
+        }
+      }
+
+      setUsernameAvailable(false);
+    }
+
+    setUsernameLoading(false);
+  };
+
   //useEffect for setting values from session storage for when the user swipes b/w signup pages
   useEffect(() => {
     setUser({
@@ -61,6 +100,7 @@ function AddUserInfo({
   useEffect(() => {
     console.log(`username : ${username}`);
     username === "" ? setUsernameAvailable(false) : checkUsername();
+    //eslint-disable-line react-hooks/exhaustive-deps
   }, [username]); //this will execute on first component mount and then every time username is changed
 
   //useEffect for checking if all values have been filled
@@ -102,45 +142,6 @@ function AddUserInfo({
 
   //     await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
   //   };
-
-  const checkUsername = async () => {
-    setUsernameLoading(true);
-
-    try {
-      cancel && cancel(); //this statement checks if cancel(defined at top of page) is there or has a truthy value, then we'll call cancel()
-
-      const CancelToken = axios.CancelToken; //to cancel a pending request and then we make a new request
-
-      //basically whenever we send a new request we have to check if we have another request before it pending and then we cancel it first. That'll happen when 'cancel' variable has some value assigned to it, which is what we checked in 1st line of try block
-      console.log("inside of checkUsername");
-      const res = await axios.get(`${baseUrl}/api/signup/${username}`, {
-        cancelToken: new CancelToken((canceler) => {
-          cancel = canceler; //we created a cancel variable at the top of this file
-        }),
-      }); //goes to /api/signup/:username in the backend
-
-      if (errorMessage !== "") setErrorMessage(""); //this is for resetting errorMsg
-
-      if (res.data === "Available") {
-        setUsernameAvailable(true);
-        setUser((prev) => ({ ...prev, username })); //append username property to the user's object
-      }
-      console.log(res.data);
-      if (res.data === "Username already taken") {
-        setErrorMessage("Username Not Available");
-      }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 400) {
-          setErrorMessage("Username Not Available");
-        }
-      }
-
-      setUsernameAvailable(false);
-    }
-
-    setUsernameLoading(false);
-  };
 
   return (
     <>

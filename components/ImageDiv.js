@@ -51,7 +51,7 @@ function ImageDiv({
             style={{ position: "relative" }}
             onClick={() => inputRef.current.click()}
           >
-            <Image src={mediaPreview} />
+            <Image src={mediaPreview} alt="image preview" />
             <AddCircleIcon
               style={{
                 cursor: "pointer",

@@ -35,14 +35,14 @@
     "styled-components": "^5.3.1",
     "styled-icons": "^10.37.0",
     "tailwind-scrollbar-hide": "^1.0.3",
-    "validator": "^13.6.0"
+    "validator": "^13.6.0",
+    "tailwindcss": "^2.2.9"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.3",
     "babel-plugin-styled-components": "^1.13.2",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.0",
-    "postcss": "^8.3.6",
-    "tailwindcss": "^2.2.9"
+    "postcss": "^8.3.6"
   }
 }

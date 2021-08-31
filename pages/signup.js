@@ -8,7 +8,7 @@ import ChevronRightRoundedIcon from "@material-ui/icons/ChevronRightRounded";
 import ChevronLeftRoundedIcon from "@material-ui/icons/ChevronLeftRounded";
 import styled from "styled-components";
 
-function signup() {
+function Signup() {
   const firstUpdate = useRef(true);
   const [animationClass, setAnimationClass] = useState(
     `${styles.fadeinreally}`
@@ -92,7 +92,7 @@ function signup() {
   );
 }
 
-export default signup;
+export default Signup;
 
 const IconContainer = styled.div`
   height: 10vh;

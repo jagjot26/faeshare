@@ -103,23 +103,25 @@ function Header({ user }) {
       </div>
 
       {/* Right */}
-      <div className="flex items-center h-12 sm:hover:bg-gray-200 px-1 rounded-3xl m-3 cursor-pointer">
-        <Image
-          className="rounded-full mr-3 hidden sm:inline-flex"
-          src={user.profilePicUrl}
-          alt="user avatar"
-        />
-        <p
-          className="hidden sm:inline-flex  text-gray-600 sm:mr-4"
-          style={{
-            fontFamily: "Roboto",
-            fontSize: "1.05rem",
-            fontWeight: "700",
-          }}
-        >
-          {user.username}
-        </p>
-      </div>
+      <Link href={`/${user.username}`} passHref>
+        <div className="flex items-center h-12 sm:hover:bg-gray-200 px-1 rounded-3xl m-3 cursor-pointer">
+          <Image
+            className="rounded-full mr-3 hidden sm:inline-flex"
+            src={user.profilePicUrl}
+            alt="user avatar"
+          />
+          <p
+            className="hidden sm:inline-flex  text-gray-600 sm:mr-4"
+            style={{
+              fontFamily: "Roboto",
+              fontSize: "1.05rem",
+              fontWeight: "700",
+            }}
+          >
+            {user.username}
+          </p>
+        </div>
+      </Link>
       <Link href="/settings" passHref>
         <div className="hidden sm:flex items-center mr-3">
           <RoundedIcon
