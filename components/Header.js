@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PlayIcon, SearchIcon } from "@heroicons/react/outline";
 import {
   HomeIcon,
@@ -13,10 +13,12 @@ import HeaderIcon from "./HeaderIcon";
 import Link from "next/link";
 import RoundedIcon from "./RoundedIcon";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import Dropdown from "./Dropdown";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 function Header({ user }) {
+  const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
-
   const activeRoute = (path) => {
     console.log(router.pathname);
     return router.pathname === path;
@@ -26,7 +28,7 @@ function Header({ user }) {
     <div className="flex bg-white sticky top-0 z-50 shadow-lg">
       {/* Left */}
       <div className="ml-2 sm:ml-5 p-1 flex items-center">
-        <div className="flex items-center">
+        <div className="hidden sm:flex items-center">
           <p
             style={{
               fontFamily: "Merienda",
@@ -38,6 +40,20 @@ function Header({ user }) {
             faeshare
           </p>
         </div>
+
+        <div className="flex sm:hidden items-center">
+          <p
+            style={{
+              fontFamily: "Merienda",
+              color: "#686869",
+              fontWeight: "700",
+              fontSize: "1.8rem",
+            }}
+          >
+            fae
+          </p>
+        </div>
+
         <div className="flex ml-5 items-center rounded-full bg-gray-100 p-2  h-12">
           <SearchIcon className="h-5 text-gray-600 px-1.5 md:px-0" />
           <input
@@ -50,7 +66,7 @@ function Header({ user }) {
 
       {/* Mid */}
       <div className="flex justify-center flex-grow">
-        <div className="flex items-center space-x-8 md:space-x-2 lg:space-x-7">
+        <div className="flex items-center space-x-8 md:space-x-2 lg:space-x-5">
           <Link href="/" passHref>
             <div>
               <HeaderIcon
@@ -60,7 +76,7 @@ function Header({ user }) {
             </div>
           </Link>
           <Link href="/following" passHref>
-            <div>
+            <div className="hidden sm:inline-flex">
               <HeaderIcon
                 active={activeRoute("/following")}
                 Icon={UsersIcon}
@@ -89,7 +105,7 @@ function Header({ user }) {
       {/* Right */}
       <div className="flex items-center h-12 sm:hover:bg-gray-200 px-1 rounded-3xl m-3 cursor-pointer">
         <Image
-          className="rounded-full mr-3"
+          className="rounded-full mr-3 hidden sm:inline-flex"
           src={user.profilePicUrl}
           alt="user avatar"
         />
@@ -97,29 +113,40 @@ function Header({ user }) {
           className="hidden sm:inline-flex  text-gray-600 sm:mr-4"
           style={{
             fontFamily: "Roboto",
-            fontSize: "1.1rem",
-            fontWeight: "600",
+            fontSize: "1.05rem",
+            fontWeight: "700",
           }}
         >
           {user.username}
         </p>
       </div>
       <Link href="/settings" passHref>
-        <div className="flex items-center mr-3">
+        <div className="hidden sm:flex items-center mr-3">
           <RoundedIcon
             active={activeRoute("/settings")}
             Icon={CogIcon}
           ></RoundedIcon>
         </div>
       </Link>
-
-      <div className="flex items-center mr-3">
-        <RoundedIcon
-          padding={"px-1.5"}
-          active={activeRoute("/settings")}
-          Icon={ArrowDropDownIcon}
-        ></RoundedIcon>
-      </div>
+      <ClickAwayListener
+        onClickAway={() => {
+          setShowDropdown(false);
+        }}
+      >
+        <div
+          className="flex items-center mr-5"
+          onClick={() => {
+            setShowDropdown((prev) => !prev);
+          }}
+        >
+          <RoundedIcon
+            stayVisible={true}
+            padding={"px-0.5"}
+            Icon={ArrowDropDownIcon}
+          ></RoundedIcon>
+        </div>
+      </ClickAwayListener>
+      {showDropdown ? <Dropdown user={user} /> : <></>}
     </div>
   );
 }

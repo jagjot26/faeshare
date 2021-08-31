@@ -10,7 +10,6 @@ import Feed from "../components/Feed";
 function Home({ user }) {
   return (
     <>
-      {/* <div onClick={() => logoutUser(user.email)}>LOGOUT USER</div> */}
       <Header user={user} />
 
       <main>

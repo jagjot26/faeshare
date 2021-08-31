@@ -22,6 +22,10 @@ const HeadTags = () => (
         href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&display=swap"
         rel="stylesheet"
       />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&family=Roboto:wght@400;500;700;900&display=swap"
+        rel="stylesheet"
+      />
 
       {/*The CSS files are in the public folder 
          With Next.js, we can create a public folder in the root and then save some files there and refer to them by '/<filename>'*/}
