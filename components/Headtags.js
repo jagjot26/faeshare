@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-const HeadTags = () => (
+const Headtags = () => (
   <>
     {/*This is the head of the document we see in html */}
     <Head>
@@ -13,7 +13,11 @@ const HeadTags = () => (
       <link rel="stylesheet" type="text/css" href="/styles.css" /> */}
       <link rel="stylesheet" type="text/css" href="/nprogress.css" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="true"
+      />
       <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto&display=swap"
         rel="stylesheet"
@@ -33,4 +37,4 @@ const HeadTags = () => (
     </Head>
   </>
 );
-export default HeadTags;
+export default Headtags;
