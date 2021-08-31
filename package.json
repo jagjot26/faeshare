@@ -34,6 +34,7 @@
     "semantic-ui-react": "^2.0.3",
     "styled-components": "^5.3.1",
     "styled-icons": "^10.37.0",
+    "tailwind-scrollbar-hide": "^1.0.3",
     "validator": "^13.6.0"
   },
   "devDependencies": {

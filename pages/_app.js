@@ -37,7 +37,10 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     ctx.pathname === "/[username]" ||
     ctx.pathname === "/post/[postId]" ||
     ctx.pathname === "/notifications" ||
-    ctx.pathname === "/messages";
+    ctx.pathname === "/messages" ||
+    ctx.pathname === "/followers" ||
+    ctx.pathname === "/following" ||
+    ctx.pathname === "/settings";
   // '/[username] leads to [username].js inside of pages folder
 
   //if there's no token in the cookie
