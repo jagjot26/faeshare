@@ -13,14 +13,15 @@ function Dropdown({ user }) {
         right: "1rem",
         height: "15rem",
         width: "15rem",
-        backgroundColor: "lightgray",
+        backgroundColor: "white",
         zIndex: "100",
         padding: "0.67rem",
         borderRadius: "0.7rem",
+        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
       }}
     >
       <Link href={`/${user.username}`} passHref>
-        <div className="flex items-center hover:bg-gray-200 p-2 rounded-md  cursor-pointer">
+        <ContainerDiv>
           <div>
             <Image
               className="rounded-full mr-3"
@@ -45,7 +46,7 @@ function Dropdown({ user }) {
               My profile
             </p>
           </div>
-        </div>
+        </ContainerDiv>
       </Link>
       <span
         style={{
@@ -91,7 +92,7 @@ const ButtonDiv = styled.div`
   column-gap: 0.5rem;
   align-items: center;
   :hover {
-    background-color: #edf2f7;
+    background-color: #eaeced;
   }
 `;
 
@@ -102,5 +103,16 @@ const Icondiv = styled.div`
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 50%;
-  background-color: #dfe3ee;
+  background-color: #e4e4e5;
+`;
+
+const ContainerDiv = styled.div`
+  display: flex;
+  align-items: center;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  :hover {
+    background-color: #eaeced;
+  }
 `;

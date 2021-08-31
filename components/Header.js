@@ -1,11 +1,20 @@
 import React, { useState } from "react";
-import { PlayIcon, SearchIcon } from "@heroicons/react/outline";
+
 import {
+  SearchIcon,
   HomeIcon,
   UsersIcon,
   BellIcon,
   ChatAltIcon,
   CogIcon,
+} from "@heroicons/react/outline";
+import {
+  SearchIcon as SearchIconSolid,
+  HomeIcon as HomeIconSolid,
+  UsersIcon as UsersIconSolid,
+  BellIcon as BellIconSolid,
+  ChatAltIcon as ChatAltIconSolid,
+  CogIcon as CogIconSolid,
 } from "@heroicons/react/solid";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -72,6 +81,7 @@ function Header({ user }) {
               <HeaderIcon
                 active={activeRoute("/")}
                 Icon={HomeIcon}
+                IconSolid={HomeIconSolid}
               ></HeaderIcon>
             </div>
           </Link>
@@ -80,6 +90,7 @@ function Header({ user }) {
               <HeaderIcon
                 active={activeRoute("/following")}
                 Icon={UsersIcon}
+                IconSolid={UsersIconSolid}
               ></HeaderIcon>
             </div>
           </Link>
@@ -88,6 +99,7 @@ function Header({ user }) {
               <HeaderIcon
                 active={activeRoute("/notifications")}
                 Icon={BellIcon}
+                IconSolid={BellIconSolid}
               ></HeaderIcon>
             </div>
           </Link>{" "}
@@ -96,6 +108,7 @@ function Header({ user }) {
               <HeaderIcon
                 active={activeRoute("/messages")}
                 Icon={ChatAltIcon}
+                IconSolid={ChatAltIconSolid}
               ></HeaderIcon>
             </div>
           </Link>
