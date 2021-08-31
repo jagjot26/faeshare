@@ -1,6 +1,9 @@
 {
   "name": "faeshare",
   "version": "0.1.0",
+  "engines": {
+    "node": "16.8.0"
+  },
   "private": true,
   "scripts": {
     "dev": "nodemon server.js",
