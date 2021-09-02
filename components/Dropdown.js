@@ -51,7 +51,7 @@ function Dropdown({ user }) {
       <span
         style={{
           height: "0.65px",
-          backgroundColor: "grey",
+          backgroundColor: "lightgrey",
           margin: "1rem 0.8rem .7rem 0.8rem",
           display: "block",
         }}

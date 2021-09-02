@@ -12,7 +12,7 @@ function Home({ user }) {
 
       <main className="flex ">
         <Sidebar user={user} />
-        <Feed />
+        <Feed user={user} />
       </main>
     </div>
   );
