@@ -10,13 +10,13 @@ const calculateTime = (createdAt) => {
     return (
       <>
         {/* hh:mm A -> hours:minutes AM/PM */}
-        Today <Moment format="hh:mm A">{createdAt}</Moment>
+        Today, <Moment format="hh:mm A">{createdAt}</Moment>
       </>
     );
   } else if (diffInHours > 24 && diffInHours < 36) {
     return (
       <>
-        Yesterday <Moment format="hh:mm A">{createdAt}</Moment>
+        Yesterday, <Moment format="hh:mm A">{createdAt}</Moment>
       </>
     );
   } else if (diffInHours > 36) {

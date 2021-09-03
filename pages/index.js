@@ -7,7 +7,7 @@ import Feed from "../components/Feed";
 import baseUrl from "../utils/baseUrl";
 
 function Home({ user, postsData, errorLoading }) {
-  console.log(`posts on index: ${postsData}`);
+  console.log(`no. of posts on index: ${postsData.length}`);
   return (
     <div className="bg-gray-100 min-h-screen">
       <Header user={user} />

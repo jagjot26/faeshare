@@ -24,7 +24,7 @@ function Feed({ user, postsData, errorLoading }) {
 
   const fetchDataOnScroll = async () => {
     try {
-      console.log(`posts on feed: ${posts}`);
+      console.log(`no. of posts on feed: ${posts.length}`);
       const res = await axios.get(`${baseUrl}/api/posts`, {
         headers: { Authorization: cookie.get("token") },
         params: { pageNumber: pageNumber },
