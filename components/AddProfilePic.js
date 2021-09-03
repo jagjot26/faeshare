@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { Heading, Subheading } from "../components/Headings";
+import { Heading, Subheading } from "./HelperComponents/Headings";
 import {
   CustomInput,
   Input,
   SocialMedia,
   SocialMediaInput,
-} from "../components/Inputs";
+} from "./HelperComponents/Inputs";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../redux/userSlice";
 import ImageDiv from "./ImageDiv";
@@ -20,7 +20,7 @@ import ArrowForwardRoundedIcon from "@material-ui/icons/ArrowForwardRounded";
 import { Circle } from "better-react-spinkit";
 import uploadPic from "../utils/uploadPic";
 import { registerUser } from "../utils/authUser";
-import ErrorComponent from "./Error";
+import ErrorComponent from "./HelperComponents/Error";
 
 function AddProfilePic() {
   const inputRef = useRef();

@@ -3,8 +3,12 @@ import styled from "styled-components";
 import Link from "next/link";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Heading, Subheading } from "../components/Headings";
-import { CustomInput, Password, PasswordInput } from "../components/Inputs";
+import { Heading, Subheading } from "../components/HelperComponents/Headings";
+import {
+  CustomInput,
+  Password,
+  PasswordInput,
+} from "../components/HelperComponents/Inputs";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { useDispatch } from "react-redux";
 import { addToUser } from "../redux/userSlice";

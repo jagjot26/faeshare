@@ -18,9 +18,9 @@ import {
 } from "@heroicons/react/solid";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import HeaderIcon from "./HeaderIcon";
+import HeaderIcon from "./HelperComponents/HeaderIcon";
 import Link from "next/link";
-import RoundedIcon from "./RoundedIcon";
+import RoundedIcon from "./HelperComponents/RoundedIcon";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Dropdown from "./Dropdown";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";

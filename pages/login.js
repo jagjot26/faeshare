@@ -5,9 +5,13 @@ import styled from "styled-components";
 import Link from "next/link";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { Heading, Subheading } from "../components/Headings";
-import { Input, Password, PasswordInput } from "../components/Inputs";
-import ErrorComponent from "../components/Error";
+import { Heading, Subheading } from "../components/HelperComponents/Headings";
+import {
+  Input,
+  Password,
+  PasswordInput,
+} from "../components/HelperComponents/Inputs";
+import ErrorComponent from "../components/HelperComponents/Error";
 import loaderGif from "../logo/chat.gif";
 import { ThreeBounce } from "better-react-spinkit";
 

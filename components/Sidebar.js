@@ -7,7 +7,7 @@ import {
   CogIcon,
 } from "@heroicons/react/solid";
 import GroupIcon from "@material-ui/icons/Group";
-import SidebarRow from "./SidebarRow";
+import SidebarRow from "./HelperComponents/SidebarRow";
 
 function Sidebar({ user }) {
   return (

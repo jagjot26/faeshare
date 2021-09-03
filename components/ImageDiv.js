@@ -11,8 +11,6 @@ function ImageDiv({
   setMediaPreview,
   setMedia,
   inputRef,
-  highlighted,
-  setHighlighted,
   handleChange,
   profilePicUrl,
 }) {
