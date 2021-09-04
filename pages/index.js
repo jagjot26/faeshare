@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { parseCookies } from "nookies";
 import Feed from "../components/Feed";
 import baseUrl from "../utils/baseUrl";
+import styles from "../styles/styles.module.css";
 
 function Home({ user, postsData, errorLoading }) {
   console.log(`no. of posts on index: ${postsData.length}`);
@@ -14,7 +15,15 @@ function Home({ user, postsData, errorLoading }) {
 
       <main className="flex ">
         <Sidebar user={user} />
-        <Feed user={user} postsData={postsData} errorLoading={errorLoading} />
+        <Feed
+          user={user}
+          postsData={postsData}
+          errorLoading={errorLoading}
+          increaseSizeAnim={{
+            sizeIncDown: styles.increasesizereally,
+            sizeIncUp: styles.sizeup,
+          }}
+        />
       </main>
     </div>
   );

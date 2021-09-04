@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { CameraIcon, ChevronUpIcon } from "@heroicons/react/solid";
 import { ArrowSmRightIcon } from "@heroicons/react/solid";
@@ -12,7 +12,7 @@ import InfoBox from "./HelperComponents/InfoBox";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
-function InputBox({ user, setPosts }) {
+function InputBox({ user, setPosts, increaseSizeAnim }) {
   const inputRef = useRef(null);
   const filePickerRef = useRef(null);
   const [image, setImage] = useState(null);
@@ -80,7 +80,7 @@ function InputBox({ user, setPosts }) {
 
         <div className="flex space-x-4 mt-2 ml-4 mr-4 justify-evenly items-center">
           <div
-            className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-2 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer"
+            className="flex flex-grow justify-center items-center hover:bg-gray-100 space-x-2 mb-2 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer"
             onClick={() => filePickerRef.current.click()}
           >
             <CameraIcon className="h-7  " />
@@ -93,7 +93,7 @@ function InputBox({ user, setPosts }) {
             <p>Photo</p>
           </div>
           <button
-            className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-2 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer"
+            className="flex flex-grow justify-center items-center hover:bg-gray-100 space-x-2 mb-2 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer"
             type="submit"
             onClick={() => createPost()}
           >
@@ -128,7 +128,7 @@ function InputBox({ user, setPosts }) {
         }}
         className="bg-white rounded-2xl mt-3 mb-10"
       >
-        {textareaEnabled ? (
+        {textareaEnabled || postText.length >= 35 ? (
           <>
             <div className="pt-6 pl-6 pr-6">
               <div className="flex space-x-4 items-center">
@@ -145,7 +145,9 @@ function InputBox({ user, setPosts }) {
               </div>
 
               <form className="w-full mt-5 flex flex-col justify-evenly">
-                <div className="p-3.5 bg-gray-100 rounded-xl items-center">
+                <div
+                  className={`p-3.5 bg-gray-100 rounded-xl items-center ${increaseSizeAnim.sizeIncDown} `}
+                >
                   <InputTextarea
                     name="postText"
                     value={postText}
@@ -153,7 +155,7 @@ function InputBox({ user, setPosts }) {
                     rows="4"
                     maxlength="4"
                     onChange={handleChange}
-                    className="outline-none w-full bg-transparent font-light text-md placeholder-gray-400 text-lg"
+                    className={`outline-none w-full bg-transparent font-light text-md placeholder-gray-400 text-lg `}
                     placeholder={`What's on your mind, ${user.name}?`}
                   ></InputTextarea>
                   <ChevronUpIcon
@@ -194,7 +196,9 @@ function InputBox({ user, setPosts }) {
                 {/* div which contains the profilepic and the input div */}
                 <div className="flex w-full space-x-4 items-center">
                   <Image src={user.profilePicUrl} alt="profile pic" />
-                  <div className="flex p-3.5 bg-gray-100 rounded-full items-center w-full">
+                  <div
+                    className={`flex p-3.5 bg-gray-100 rounded-full items-center w-full ${increaseSizeAnim.sizeIncUp}`}
+                  >
                     <input
                       name="postText"
                       value={postText}

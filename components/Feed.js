@@ -11,7 +11,7 @@ import baseUrl from "../utils/baseUrl";
 import cookie from "js-cookie";
 import { Facebook } from "react-content-loader";
 
-function Feed({ user, postsData, errorLoading }) {
+function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
   const [posts, setPosts] = useState(postsData);
   const [showToaster, setShowToaster] = useState(false);
   const [hasMore, setHasMore] = useState(true); //means if there is more data to fetch frm backend, then it'll be true
@@ -48,7 +48,11 @@ function Feed({ user, postsData, errorLoading }) {
   return (
     <div className="flex-grow h-full pt-6 mr-5 xl:mr-40 ml-20 md:ml-0 md:mr-0  scrollbar-hide">
       <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl">
-        <InputBox user={user} setPosts={setPosts} />
+        <InputBox
+          user={user}
+          setPosts={setPosts}
+          increaseSizeAnim={increaseSizeAnim}
+        />
 
         {posts.length === 0 || errorLoading ? (
           <InfoBox

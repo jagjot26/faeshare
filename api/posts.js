@@ -50,9 +50,7 @@ router.get("/", authMiddleware, async (req, res) => {
 
   try {
     const { userId } = req;
-    const loggedUser = await FollowerModel.findOne({ user: userId }).select(
-      "-followers"
-    ); //-followers as we only need the following from the followerModel
+    const loggedUser = await FollowerModel.findOne({ user: userId }); //-followers as we only need the following from the followerModel
     let posts = [];
 
     if (number === 1) {

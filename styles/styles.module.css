@@ -40,8 +40,56 @@
   }
 }
 
+@keyframes sizeincdown {
+  0% {
+    /* to set it to invisible at first */
+    transform: translateY(-1.3rem);
+    /* to start it from 100px left of its actual positon */
+  }
+
+  50% {
+    /* transform: translateY(-0.5rem); */
+    /* to move it a bit to the right before it goes back to its actual position at 100% */
+  }
+
+  100% {
+    opacity: 1;
+    /* to set it back to visible */
+    transform: translateY(0);
+    /* to move it back to its actual position */
+  }
+}
+
+@keyframes sizeincup {
+  0% {
+    /* to set it to invisible at first */
+    transform: translateY(0.3rem);
+    /* to start it from 100px left of its actual positon */
+  }
+
+  50% {
+    /* transform: translateY(-0.5rem); */
+    /* to move it a bit to the right before it goes back to its actual position at 100% */
+  }
+
+  100% {
+    opacity: 1;
+    /* to set it back to visible */
+    transform: translateY(0);
+    /* to move it back to its actual position */
+  }
+}
+
 .fadeinreally {
   animation: fadein 1.3s ease-out;
+}
+
+.increasesizereally {
+  animation: sizeincdown 0.46s ease;
+}
+
+.sizeup {
+  animation: sizeincup 0.31s ease-out;
 }
 
 .test {
