@@ -11,8 +11,10 @@ import {
 import { postComment } from "../utils/postActions";
 import CommentComponent from "./CommentComponent";
 import { TextareaAutosize } from "@material-ui/core";
+import { useRouter } from "next/router";
 
 function PostCard({ post, user, setPosts, setShowToastr }) {
+  const router = useRouter();
   const [likes, setLikes] = useState(post.likes);
   const [comments, setComments] = useState(post.comments);
   const [error, setError] = useState(null);
@@ -40,22 +42,20 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
 
   return (
     <div
-      style={{ fontFamily: "Roboto" }}
+      style={{ fontFamily: "Inter" }}
       className="mb-7 bg-white flex flex-col justify-start rounded-2xl shadow-md"
     >
       <div className="p-4">
         <div className="flex space-x-3 items-center ml-2">
           <Image src={user.profilePicUrl} />
           <div>
-            <p
-              style={{
-                marginBottom: "-.09rem",
-                fontWeight: "500",
-                fontSize: "1.1rem",
+            <UserPTag
+              onClick={() => {
+                router.push(`/${user.username}`);
               }}
             >
               {user.name}
-            </p>
+            </UserPTag>
             <p
               style={{
                 fontSize: ".91rem",
@@ -78,11 +78,13 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
               className="h-4 text-gray-400
             "
             />
-            <p className="text-md text-gray-500 font-light">{likes.length}</p>
+            <p className="text-md text-gray-500 font-light select-none">
+              {likes.length}
+            </p>
           </div>
           <p
             onClick={() => setShowComments((prev) => !prev)}
-            className="text-gray-500 cursor-pointer hover:underline font-light"
+            className="text-gray-500 cursor-pointer hover:underline font-light select-none"
           >{`${comments.length}   comments`}</p>
         </div>
       </div>
@@ -97,18 +99,18 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
       >
         <div className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-1 mt-1 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer">
           <ThumbUpOutlineIcon className="h-6" />
-          <p>Like</p>
+          <p style={{ userSelect: "none" }}>Like</p>
         </div>
         <div
           onClick={() => setShowComments((prev) => !prev)}
           className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-1 mt-1 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer"
         >
           <ChatAltIcon className="h-6" />
-          <p>Comment</p>
+          <p style={{ userSelect: "none" }}>Comment</p>
         </div>
         <div className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-1 mt-1 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer">
           <ShareIcon className="h-6" />
-          <p>Share</p>
+          <p style={{ userSelect: "none" }}>Share</p>
         </div>
       </div>
 
@@ -128,7 +130,7 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
                   className={`flex bg-gray-100 rounded-3xl items-center w-full`}
                 >
                   <TextareaAutosize
-                    style={{ resize: "none" }}
+                    style={{ resize: "none", fontFamily: "Inter" }}
                     name="commentText"
                     value={commentText}
                     onChange={(e) => {
@@ -150,8 +152,6 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
               ></button>
             </form>
           </div>
-
-          {comments.length === 0 && <div className="h-4"></div>}
 
           {comments.length > 0 &&
             comments.map(
@@ -196,4 +196,14 @@ const PostImage = styled.img`
   transition: all 0.22s ease-out;
   border-top: 0.7px solid lightgrey;
   border-bottom: 0.7px solid lightgrey;
+`;
+
+const UserPTag = styled.p`
+  cursor: pointer;
+  margin-bottom: -0.09rem;
+  font-weight: 500;
+  font-size: 1.05rem;
+  :hover {
+    text-decoration: underline;
+  }
 `;
