@@ -14,6 +14,7 @@ import Loader from "react-loader-spinner";
 
 function InputBox({ user, setPosts, increaseSizeAnim }) {
   const inputRef = useRef(null);
+  const buttonRef = useRef(null);
   const filePickerRef = useRef(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -38,7 +39,8 @@ function InputBox({ user, setPosts, increaseSizeAnim }) {
     setImagePreview(URL.createObjectURL(files[0]));
   };
 
-  const createPost = async () => {
+  const createPost = async (e) => {
+    e.preventDefault();
     setLoading(true);
     let picUrl;
 
@@ -88,6 +90,7 @@ function InputBox({ user, setPosts, increaseSizeAnim }) {
               ref={filePickerRef}
               onChange={addImageFromDevice}
               type="file"
+              accept="image/*"
               style={{ display: "none" }}
             />
             <p>Photo</p>
@@ -95,7 +98,8 @@ function InputBox({ user, setPosts, increaseSizeAnim }) {
           <button
             className="flex flex-grow justify-center items-center hover:bg-gray-100 space-x-2 mb-2 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer"
             type="submit"
-            onClick={() => createPost()}
+            ref={buttonRef}
+            onClick={createPost}
           >
             {loading ? (
               <>
@@ -119,6 +123,13 @@ function InputBox({ user, setPosts, increaseSizeAnim }) {
     );
   };
 
+  const onEnterPress = (e) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      buttonRef.current.click();
+    }
+  };
+
   return (
     <div>
       <div
@@ -128,7 +139,7 @@ function InputBox({ user, setPosts, increaseSizeAnim }) {
         }}
         className="bg-white rounded-2xl mt-3 mb-10"
       >
-        {textareaEnabled || postText.length >= 35 ? (
+        {textareaEnabled ? (
           <>
             <div className="pt-6 pl-6 pr-6">
               <div className="flex space-x-4 items-center">
@@ -157,6 +168,7 @@ function InputBox({ user, setPosts, increaseSizeAnim }) {
                     onChange={handleChange}
                     className={`outline-none w-full bg-transparent font-light text-md placeholder-gray-400 text-lg `}
                     placeholder={`What's on your mind, ${user.name}?`}
+                    onKeyDown={onEnterPress}
                   ></InputTextarea>
                   <ChevronUpIcon
                     className="h-6 w-6 cursor-pointer text-gray-500 ml-auto"

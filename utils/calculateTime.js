@@ -26,7 +26,7 @@ const calculateTime = (createdAt, isComment) => {
     //     Today, <Moment format="hh:mm A">{createdAt}</Moment>
     //   </>
     // );
-  } else if (diffInHours > 24 && diffInHours < 36) {
+  } else if (diffInHours >= 24 && diffInHours < 36) {
     if (isComment) {
       return `${diffInDays} d`;
     }
@@ -35,14 +35,19 @@ const calculateTime = (createdAt, isComment) => {
         Yesterday, <Moment format="HH:mm">{createdAt}</Moment>
       </>
     );
-  } else if (diffInHours > 36) {
+  } else if (diffInHours >= 36 && diffInHours < 168) {
     if (isComment) {
       return `${diffInDays} d`;
     }
-    if (diffInHours > 168) {
-      if (isComment) {
-        return `${diffInWeeks} w`;
-      }
+    return (
+      <>
+        {/* date/month/year along with time */}
+        <Moment format="DD MMM YYYY, HH:mm">{createdAt}</Moment>
+      </>
+    );
+  } else if (diffInHours >= 168) {
+    if (isComment) {
+      return `${diffInWeeks} w`;
     }
     return (
       <>

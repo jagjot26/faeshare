@@ -74,10 +74,16 @@ export const postComment = async (postId, user, text, setComments, setText) => {
   }
 };
 
-export const deleteComment = async (postId, commentId, setComments) => {
+export const deleteComment = async (
+  postId,
+  commentId,
+  setComments,
+  notifyCommentDelete
+) => {
   try {
     await Axios.delete(`/${postId}/${commentId}`);
     setComments((prev) => prev.filter((comment) => comment._id !== commentId));
+    notifyCommentDelete();
   } catch (error) {
     alert(catchErrors(error));
   }

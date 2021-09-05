@@ -5,6 +5,12 @@ import { useRouter } from "next/router";
 import { MinusCircleIcon, TrashIcon } from "@heroicons/react/outline";
 import ReusableDialog from "./ReusableDialog";
 import { deleteComment } from "../utils/postActions";
+import toast, { Toaster } from "react-hot-toast";
+
+const notifyCommentDelete = () =>
+  toast.success("Comment deleted successfully!", {
+    position: "bottom-center",
+  });
 
 function CommentComponent({ comment, postId, user, setComments }) {
   const router = useRouter();
@@ -28,7 +34,7 @@ function CommentComponent({ comment, postId, user, setComments }) {
   };
 
   const handleAgree = () => {
-    deleteComment(postId, comment._id, setComments);
+    deleteComment(postId, comment._id, setComments, notifyCommentDelete);
 
     handleClose();
   };
@@ -39,6 +45,7 @@ function CommentComponent({ comment, postId, user, setComments }) {
 
   return (
     <div className="flex items-start pl-5 pr-3 mt-3">
+      <Toaster position="bottom-center" />
       <Image
         src={comment.user.profilePicUrl}
         style={{ height: "2.45rem", width: "2.45rem", marginTop: ".2rem" }}

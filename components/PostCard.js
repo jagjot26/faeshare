@@ -1,4 +1,3 @@
-import { props } from "bluebird";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import calculateTime from "../utils/calculateTime";
@@ -15,13 +14,19 @@ import { TextareaAutosize } from "@material-ui/core";
 import { useRouter } from "next/router";
 import ReusableDialog from "./ReusableDialog";
 import toast, { Toaster } from "react-hot-toast";
+import baseUrl from "../utils/baseUrl";
 
 const notify = () =>
   toast.success("Post deleted successfully!", {
     position: "bottom-center",
   });
 
-function PostCard({ post, user, setPosts, setShowToaster }) {
+const notifyCopyLink = () =>
+  toast.success("Post link copied to clipboard!", {
+    position: "bottom-center",
+  });
+
+function PostCard({ post, user, setPosts, postById }) {
   const router = useRouter();
   const [likes, setLikes] = useState(post.likes);
   const [comments, setComments] = useState(post.comments);
@@ -30,7 +35,7 @@ function PostCard({ post, user, setPosts, setShowToaster }) {
     likes.length > 0 &&
     likes.filter((like) => like.user === user._id).length > 0; //check if post has been liked by logged in user
   const [commentText, setCommentText] = useState("");
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(postById ? true : false);
   const [loading, setLoading] = useState(false);
   const buttonRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -108,7 +113,7 @@ function PostCard({ post, user, setPosts, setShowToaster }) {
             handleAgree={handleAgree}
             handleDisagree={handleDisagree}
           />
-          {post.user._id === user._id && (
+          {post.user._id === user._id && !postById && (
             <ThreeDotsDiv
               onClick={() => {
                 handleClickOpen();
@@ -180,7 +185,14 @@ function PostCard({ post, user, setPosts, setShowToaster }) {
           <ChatAltIcon className="h-6" />
           <p style={{ userSelect: "none" }}>Comment</p>
         </div>
-        <div className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-1 mt-1 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer">
+        <div
+          onClick={() => {
+            navigator.clipboard.writeText(`${baseUrl}/post/${post._id}`);
+
+            notifyCopyLink();
+          }}
+          className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-1 mt-1 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer"
+        >
           <ShareIcon className="h-6" />
           <p style={{ userSelect: "none" }}>Share</p>
         </div>
@@ -225,10 +237,11 @@ function PostCard({ post, user, setPosts, setShowToaster }) {
             </form>
           </div>
 
-          {comments.length > 0 &&
-            comments.map(
-              (comment, i) =>
-                i < 3 && (
+          {/* checking if we're on postIdpage. If we're, then rendering all comments, otherwise rendering only 3 */}
+          {postById ? (
+            <>
+              {comments.length > 0 &&
+                comments.map((comment) => (
                   <CommentComponent
                     key={comment._id}
                     comment={comment}
@@ -236,11 +249,31 @@ function PostCard({ post, user, setPosts, setShowToaster }) {
                     user={user}
                     setComments={setComments}
                   />
-                )
-            )}
+                ))}
+            </>
+          ) : (
+            <>
+              {comments.length > 0 &&
+                comments.map(
+                  (comment, i) =>
+                    i < 3 && (
+                      <CommentComponent
+                        key={comment._id}
+                        comment={comment}
+                        postId={post._id}
+                        user={user}
+                        setComments={setComments}
+                      />
+                    )
+                )}
+            </>
+          )}
 
-          {comments.length > 3 && (
-            <p className="hover:underline ml-5 mt-3 text-gray-500 cursor-pointer font-normal">
+          {!postById && comments.length > 3 && (
+            <p
+              onClick={() => router.push(`/post/${post._id}`)}
+              className="hover:underline ml-5 mt-3 text-gray-500 cursor-pointer font-normal"
+            >
               View all comments
             </p>
           )}
@@ -262,6 +295,7 @@ const Image = styled.img`
 const PostImage = styled.img`
   object-fit: contain;
   height: auto;
+  max-height: 455px;
   width: 100%;
   margin-top: 0.35rem;
   margin-bottom: 1.2rem;
