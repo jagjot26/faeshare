@@ -10,17 +10,17 @@ import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import cookie from "js-cookie";
 import { Facebook } from "react-content-loader";
+import { PostDeleteToaster } from "../components/Toaster";
 
 function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
   const [posts, setPosts] = useState(postsData);
-  const [showToaster, setShowToaster] = useState(false);
   const [hasMore, setHasMore] = useState(true); //means if there is more data to fetch frm backend, then it'll be true
   const [pageNumber, setPageNumber] = useState(2); //we set it to 2 initially because from getInitialProps below, posts of pageNumber 1 have already been fetched. So now, it's set to pageNumber 2 for next pagination call
 
-  useEffect(() => {
-    showToaster && setTimeout(() => setShowToaster(false), 3000);
-    //if showToastr is true, setShowToastr to false after 3s
-  }, [showToaster]);
+  // useEffect(() => {
+  //   showToaster && setTimeout(() => setShowToaster(false), 3000);
+  //   //if showToastr is true, setShowToastr to false after 3s
+  // }, [showToaster]);
 
   const fetchDataOnScroll = async () => {
     try {
@@ -46,47 +46,48 @@ function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
   };
 
   return (
-    <div className="flex-grow h-full pt-6 mr-5 xl:mr-40 ml-20 md:ml-0 md:mr-0  scrollbar-hide">
-      <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl">
-        <InputBox
-          user={user}
-          setPosts={setPosts}
-          increaseSizeAnim={increaseSizeAnim}
-        />
+    <>
+      <div className="flex-grow h-full pt-6 mr-5 xl:mr-40 ml-20 md:ml-0 md:mr-0  scrollbar-hide">
+        <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl">
+          <InputBox
+            user={user}
+            setPosts={setPosts}
+            increaseSizeAnim={increaseSizeAnim}
+          />
 
-        {posts.length === 0 || errorLoading ? (
-          <InfoBox
-            Icon={EmojiSadIcon}
-            message="Sorry, no posts..."
-            content="Please follow another person or create a new post to start seeing posts."
-          ></InfoBox>
-        ) : (
-          <InfiniteScroll
-            /* next is the function for fetching data from backend when the user reaches the end */
-            hasMore={hasMore}
-            next={fetchDataOnScroll}
-            loader={<Facebook />}
-            endMessage={
-              <div className="w-full mt-6 mb-6">
-                <RefreshIcon className="h-7 mx-auto" />
-              </div>
-            }
-            dataLength={posts.length}
-            // end message is the component which will get displayed when no more posts to be fetched from backend
-          >
-            {posts.map((post) => (
-              <PostCard
-                key={post._id}
-                post={post}
-                user={user}
-                setPosts={setPosts}
-                setShowToaster={setShowToaster}
-              />
-            ))}
-          </InfiniteScroll>
-        )}
+          {posts.length === 0 || errorLoading ? (
+            <InfoBox
+              Icon={EmojiSadIcon}
+              message="Sorry, no posts..."
+              content="Please follow another person or create a new post to start seeing posts."
+            ></InfoBox>
+          ) : (
+            <InfiniteScroll
+              /* next is the function for fetching data from backend when the user reaches the end */
+              hasMore={hasMore}
+              next={fetchDataOnScroll}
+              loader={<Facebook />}
+              endMessage={
+                <div className="w-full mt-6 mb-6">
+                  <RefreshIcon className="h-7 mx-auto" />
+                </div>
+              }
+              dataLength={posts.length}
+              // end message is the component which will get displayed when no more posts to be fetched from backend
+            >
+              {posts.map((post) => (
+                <PostCard
+                  key={post._id}
+                  post={post}
+                  user={user}
+                  setPosts={setPosts}
+                />
+              ))}
+            </InfiniteScroll>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

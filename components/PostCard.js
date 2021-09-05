@@ -5,15 +5,23 @@ import calculateTime from "../utils/calculateTime";
 import { ThumbUpIcon } from "@heroicons/react/solid";
 import {
   ChatAltIcon,
+  MinusCircleIcon,
   ShareIcon,
   ThumbUpIcon as ThumbUpOutlineIcon,
 } from "@heroicons/react/outline";
-import { postComment } from "../utils/postActions";
+import { deletePost, likePost, postComment } from "../utils/postActions";
 import CommentComponent from "./CommentComponent";
 import { TextareaAutosize } from "@material-ui/core";
 import { useRouter } from "next/router";
+import ReusableDialog from "./ReusableDialog";
+import toast, { Toaster } from "react-hot-toast";
 
-function PostCard({ post, user, setPosts, setShowToastr }) {
+const notify = () =>
+  toast.success("Post deleted successfully!", {
+    position: "bottom-center",
+  });
+
+function PostCard({ post, user, setPosts, setShowToaster }) {
   const router = useRouter();
   const [likes, setLikes] = useState(post.likes);
   const [comments, setComments] = useState(post.comments);
@@ -25,6 +33,7 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
   const [showComments, setShowComments] = useState(false);
   const [loading, setLoading] = useState(false);
   const buttonRef = useRef(null);
+  const [open, setOpen] = useState(false);
 
   const createComment = async (e) => {
     e.preventDefault();
@@ -40,13 +49,37 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
     }
   };
 
+  const handleLike = async () => {
+    await likePost(post._id, user._id, setLikes, isLiked ? false : true);
+  };
+
+  //Dialog functions
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAgree = async () => {
+    await deletePost(post._id, setPosts, notify);
+
+    handleClose();
+  };
+  const handleDisagree = () => {
+    console.log("I do not agree.");
+    handleClose();
+  };
+
   return (
     <div
       style={{ fontFamily: "Inter" }}
       className="mb-7 bg-white flex flex-col justify-start rounded-2xl shadow-md"
     >
+      <Toaster />
       <div className="p-4">
-        <div className="flex space-x-3 items-center ml-2">
+        <div className="flex space-x-3 items-center ml-2 relative">
           <Image src={user.profilePicUrl} />
           <div>
             <UserPTag
@@ -65,6 +98,29 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
               {calculateTime(post.createdAt)}
             </p>
           </div>
+
+          <ReusableDialog
+            title={"Delete Post"}
+            action={"delete"}
+            item={"post"}
+            open={open}
+            handleClose={handleClose}
+            handleAgree={handleAgree}
+            handleDisagree={handleDisagree}
+          />
+          {post.user._id === user._id && (
+            <ThreeDotsDiv
+              onClick={() => {
+                handleClickOpen();
+              }}
+              className="flex justify-center items-center absolute top-0 right-2"
+            >
+              <MinusCircleIcon
+                style={{ height: "1.2rem", width: "1.2rem" }}
+                className="text-gray-500"
+              />
+            </ThreeDotsDiv>
+          )}
         </div>
         <p className="ml-2 mt-5">{post.text}</p>
       </div>
@@ -97,9 +153,25 @@ function PostCard({ post, user, setPosts, setShowToastr }) {
         }}
         className="flex space-x-4 ml-4 mr-4 justify-evenly items-center text-gray-500"
       >
-        <div className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-1 mt-1 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer">
-          <ThumbUpOutlineIcon className="h-6" />
-          <p style={{ userSelect: "none" }}>Like</p>
+        <div
+          onClick={() => handleLike()}
+          className="flex flex-grow justify-center hover:bg-gray-100 space-x-2 mb-1 mt-1 pt-2 pb-2 pl-2.5 pr-2.5 rounded-xl cursor-pointer "
+        >
+          <ThumbUpOutlineIcon
+            className={`h-6 ${isLiked ? "text-transparent" : ""}`}
+            style={{
+              fill: `${isLiked ? "black" : "transparent"}`,
+            }}
+          />
+          <p
+            style={{
+              userSelect: "none",
+              color: `${isLiked ? "black" : "rgba(107, 114, 128)"}`,
+            }}
+          >
+            {/* rgba(124,58,237) */}
+            Like
+          </p>
         </div>
         <div
           onClick={() => setShowComments((prev) => !prev)}
@@ -205,5 +277,17 @@ const UserPTag = styled.p`
   font-size: 1.05rem;
   :hover {
     text-decoration: underline;
+  }
+`;
+
+const ThreeDotsDiv = styled.div`
+  height: 2.1rem;
+  width: 2.1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0.1rem;
+  font-size: 1.2rem;
+  :hover {
+    background-color: whitesmoke;
   }
 `;

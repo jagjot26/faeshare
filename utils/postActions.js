@@ -30,13 +30,12 @@ export const submitNewPost = async (
   }
 };
 
-export const deletePost = async (postId, setPosts, setShowToastr) => {
+export const deletePost = async (postId, setPosts, notify) => {
   try {
     await Axios.delete(`/${postId}`);
 
     setPosts((prev) => prev.filter((post) => post._id !== postId)); //filters out and returns a new array of posts without the one we wanted
-
-    setShowToastr(true);
+    notify();
   } catch (error) {
     alert(catchErrors(error));
   }
