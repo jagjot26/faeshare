@@ -85,14 +85,14 @@ function PostCard({ post, user, setPosts, postById }) {
       <Toaster />
       <div className="p-4">
         <div className="flex space-x-3 items-center ml-2 relative">
-          <Image src={user.profilePicUrl} />
+          <Image src={post.user.profilePicUrl} />
           <div>
             <UserPTag
               onClick={() => {
-                router.push(`/${user.username}`);
+                router.push(`/${post.user.username}`);
               }}
             >
-              {user.name}
+              {post.user.name}
             </UserPTag>
             <p
               style={{

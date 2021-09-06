@@ -1,13 +1,15 @@
 import { XIcon } from "@heroicons/react/solid";
 import React from "react";
 
-function InfoBox({ Icon, message, content, setError }) {
+function InfoBox({ Icon, message, content, setError, marginTop }) {
   return (
     <div
       style={{
         position: "relative",
       }}
-      className=" bg-white w-full mt-7 p-3 rounded-xl shadow-md"
+      className={` bg-white w-full ${
+        marginTop ? "mt-0" : "mt-7"
+      }  p-3 rounded-xl shadow-md`}
     >
       <div
         className={`flex space-x-1 ml-1.5 items-center ${

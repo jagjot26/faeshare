@@ -58,7 +58,7 @@ function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
             <InfoBox
               Icon={EmojiSadIcon}
               message="Sorry, no posts..."
-              content="Please follow another person or create a new post to start seeing posts."
+              content="Please follow another user or create a new post to start seeing posts."
             ></InfoBox>
           ) : (
             <InfiniteScroll

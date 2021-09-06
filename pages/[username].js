@@ -3,9 +3,17 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import { CameraIcon } from "@heroicons/react/solid";
+import {
+  CameraIcon,
+  CheckCircleIcon,
+  UserAddIcon,
+} from "@heroicons/react/solid";
 import uploadPic from "../utils/uploadPic";
-import { profilePicturesUpdate } from "../utils/profileActions";
+import {
+  followUser,
+  unfollowUser,
+  profilePicturesUpdate,
+} from "../utils/profileActions";
 import Loader from "react-loader-spinner";
 import { parseCookies } from "nookies";
 import axios from "axios";
@@ -24,6 +32,7 @@ import { Facebook as FacebookLoader } from "react-content-loader";
 
 function ProfilePage({
   user,
+  userFollowStats,
   profile,
   followersLength,
   followingLength,
@@ -35,7 +44,7 @@ function ProfilePage({
   const profilePicRef = useRef(null);
   const [coverPic, setCoverPic] = useState(null);
   const [coverPicPreview, setCoverPicPreview] = useState(
-    user.coverPicUrl || null
+    profile.user.coverPicUrl
   );
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState(null);
@@ -48,6 +57,15 @@ function ProfilePage({
   const router = useRouter();
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
+
+  //state for follow stats
+  const [loggedUserFollowStats, setUserFollowStats] = useState(userFollowStats);
+
+  const isLoggedInUserFollowing =
+    loggedUserFollowStats.following.length > 0 &&
+    loggedUserFollowStats.following.filter(
+      (following) => following.user === profile.user._id
+    ).length > 0;
 
   const addImageFromDevice = async (e, name) => {
     const { files } = e.target;
@@ -94,8 +112,13 @@ function ProfilePage({
 
   //coverPic
   useEffect(() => {
-    if (!isMountRef.current || user.coverPicUrl === coverPicPreview) {
+    if (coverPic === null) {
+      return;
+    }
+
+    if (!isMountRef.current) {
       isMountRef.current = true;
+      return;
     } else {
       async function updateCoverPic() {
         let picUrl;
@@ -156,7 +179,9 @@ function ProfilePage({
     <>
       <Header user={user} />
       <div
-        className="min-h-[31rem] shadow-lg"
+        className={` ${
+          !isUserOnOwnAccount ? "min-h-[32.4rem]" : "min-h-[29.3rem]"
+        }  shadow-lg`}
         style={{ fontFamily: "Inter", backgroundColor: "white" }}
       >
         <div className="mx-auto max-w-lg sm:max-w-xl md:max-w-3xl lg:max-w-[1000px]">
@@ -189,11 +214,32 @@ function ProfilePage({
             {profilePicPreview !== null ? (
               <ProfileImage src={profilePicPreview} alt="profilepic" />
             ) : (
-              <ProfileImage src={user.profilePicUrl} alt="profilepic" />
+              <ProfileImage src={profile.user.profilePicUrl} alt="profilepic" />
             )}
 
-            <Name className="font-semibold text-3xl">{user.name}</Name>
-            <Username className="text-xl font-normal text-gray-600">{`@${user.username}`}</Username>
+            <Name className="font-semibold text-3xl">{profile.user.name}</Name>
+            {/* <Username className="text-xl font-normal text-gray-600">{`@${profile.user.username}`}</Username> */}
+
+            {!isUserOnOwnAccount &&
+              (isLoggedInUserFollowing ? (
+                <FollowButton
+                  onClick={async () => {
+                    await unfollowUser(profile.user._id, setUserFollowStats);
+                  }}
+                >
+                  <CheckCircleIcon className="h-6" />
+                  <p className="ml-1.5">Following</p>
+                </FollowButton>
+              ) : (
+                <FollowButton
+                  onClick={async () => {
+                    await followUser(profile.user._id, setUserFollowStats);
+                  }}
+                >
+                  <UserAddIcon className="h-6" />
+                  <p className="ml-1.5">Follow</p>
+                </FollowButton>
+              ))}
 
             {isUserOnOwnAccount && (
               <>
@@ -230,10 +276,13 @@ function ProfilePage({
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 w-full" style={{ marginTop: ".18rem" }}>
+      <div
+        className="bg-gray-100 w-full"
+        style={{ marginTop: ".18rem", minHeight: "20rem" }}
+      >
         <div className="flex space-x-4 mx-auto max-w-[30rem] sm:max-w-xl md:max-w-3xl lg:max-w-[1000px]">
           <div
-            className="flex-grow mt-6"
+            className="mt-6 flex-1 max-w-[27rem]"
             style={{
               position: "-webkit-sticky" /* for Safari */,
               position: "sticky",
@@ -241,11 +290,15 @@ function ProfilePage({
               alignSelf: "flex-start",
             }}
           >
-            <ProfileFields />
+            <ProfileFields
+              key={router.query.username}
+              profile={profile}
+              isUserOnOwnAccount={isUserOnOwnAccount}
+            />
             <FollowingUsers />
             <FollowerUsers />
           </div>
-          <div className="flex-grow mt-6 max-w-md md:max-w-lg lg:max-w-2xl">
+          <div className="flex-1 flex-grow mt-6 max-w-md md:max-w-lg lg:max-w-2xl ">
             {loadingPosts ? (
               <FacebookLoader />
             ) : posts.length > 0 ? (
@@ -259,9 +312,18 @@ function ProfilePage({
               ))
             ) : (
               <InfoBox
+                marginTop={1}
                 Icon={EmojiSadIcon}
-                message={"No posts"}
-                content={"Nothing to see here."}
+                message={
+                  isUserOnOwnAccount
+                    ? `You don't have any posts, ${profile.user.name}.`
+                    : "No posts"
+                }
+                content={
+                  isUserOnOwnAccount
+                    ? `Create a new post to start seeing posts here and get your faeshare of attention.`
+                    : "This user hasn't made a single post. It looks like they are only interested in viewing other posts and lurking around."
+                }
               />
             )}
           </div>
@@ -344,4 +406,18 @@ const Username = styled.p`
   top: 144%;
   left: 50%;
   transform: translate(-50%, -50%);
+`;
+
+const FollowButton = styled.div`
+  display: flex;
+  position: absolute;
+  cursor: pointer;
+  top: 151%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.45rem 0.5rem;
+  border-radius: 0.5rem;
+  background-color: rgba(139, 92, 246);
+  color: white;
+  font-size: 1.1rem;
 `;

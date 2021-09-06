@@ -65,6 +65,8 @@ router.post("/", async (req, res) => {
       username: username.toLowerCase(),
       password,
       profilePicUrl: req.body.profilePicUrl || userPng,
+      coverPicUrl:
+        "https://images.pexels.com/photos/114979/pexels-photo-114979.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
     });
 
     user.password = await bcrypt.hash(password, 10); //encrypt password. More will be the rounds, more memory it will consume. 10 is the recommended number
