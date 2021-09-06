@@ -5,7 +5,7 @@ import {
   BellIcon,
   ChatIcon,
   CogIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/outline";
 import GroupIcon from "@material-ui/icons/Group";
 import SidebarRow from "./HelperComponents/SidebarRow";
 

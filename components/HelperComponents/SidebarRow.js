@@ -7,7 +7,7 @@ function SidebarRow({ Icon, title, src, route }) {
     <Link href={route} passHref>
       <div className="cursor-pointer flex items-center space-x-4 p-4 hover:bg-gray-200 rounded-md">
         {src && <Image src={src} alt="profile pic" />}
-        {Icon && <Icon style={{ color: "#9263c4" }} className="h-9 w-9" />}
+        {Icon && <Icon style={{ color: "#7d67e9" }} className="h-9 w-9" />}
         <p
           style={{
             fontFamily: "Roboto",

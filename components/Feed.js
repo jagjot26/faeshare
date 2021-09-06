@@ -10,7 +10,6 @@ import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import cookie from "js-cookie";
 import { Facebook } from "react-content-loader";
-import { PostDeleteToaster } from "../components/Toaster";
 
 function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
   const [posts, setPosts] = useState(postsData);
