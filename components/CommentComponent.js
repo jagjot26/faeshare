@@ -62,7 +62,7 @@ function CommentComponent({ comment, postId, user, setComments }) {
           className={`bg-gray-100 rounded-3xl items-center`}
         >
           <div className="flex space-x-1">
-            <UserPTag onClick={() => router.push(`/${user.username}`)}>
+            <UserPTag onClick={() => router.push(`/${comment.user.username}`)}>
               {comment.user.name} ·{"  "}
             </UserPTag>
             <span

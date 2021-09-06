@@ -15,13 +15,19 @@ const notifyError = () =>
     position: "bottom-center",
   });
 
-function ProfileFields({ profile, isUserOnOwnAccount }) {
+function ProfileFields({ profile, isUserOnOwnAccount, newComp }) {
   const [bio, setBio] = useState(profile.bio || "");
   const [social, setSocial] = useState({
-    youtube: profile.social ? profile.social.youtube : "",
-    twitter: profile.social ? profile.social.twitter : "",
-    instagram: profile.social ? profile.social.instagram : "",
-    facebook: profile.social ? profile.social.facebook : "",
+    youtube:
+      profile.social && profile.social.youtube ? profile.social.youtube : "",
+    twitter:
+      profile.social && profile.social.twitter ? profile.social.twitter : "",
+    instagram:
+      profile.social && profile.social.instagram
+        ? profile.social.instagram
+        : "",
+    facebook:
+      profile.social && profile.social.facebook ? profile.social.facebook : "",
   });
   const [editProfile, setEditProfile] = useState(false);
   const [error, setError] = useState(false);
@@ -29,7 +35,7 @@ function ProfileFields({ profile, isUserOnOwnAccount }) {
 
   const { youtube, twitter, instagram, facebook } = social;
 
-  console.log(bio);
+  console.log(facebook);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +62,12 @@ function ProfileFields({ profile, isUserOnOwnAccount }) {
     >
       {editProfile ? (
         <div className="flex justify-between ml-1 mr-0.5 mb-1">
-          <h1 className="text-2xl font-bold">Intro</h1>
+          <h1
+            className="text-2xl font-semibold"
+            style={{ fontFamily: "inherit" }}
+          >
+            Intro
+          </h1>
           <Toaster />
           {loading ? (
             <Loader
@@ -76,7 +87,12 @@ function ProfileFields({ profile, isUserOnOwnAccount }) {
       ) : (
         <>
           <div className="flex justify-between">
-            <h1 className="text-2xl font-bold mb-1">Intro</h1>
+            <h1
+              className="text-2xl font-semibold mb-1"
+              style={{ fontFamily: "inherit" }}
+            >
+              Intro
+            </h1>
             {isUserOnOwnAccount && (
               <PencilAltIcon
                 onClick={() => setEditProfile(true)}

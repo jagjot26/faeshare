@@ -280,23 +280,32 @@ function ProfilePage({
         className="bg-gray-100 w-full"
         style={{ marginTop: ".18rem", minHeight: "20rem" }}
       >
-        <div className="flex space-x-4 mx-auto max-w-[30rem] sm:max-w-xl md:max-w-3xl lg:max-w-[1000px]">
+        <div className=" md:flex space-x-4 mx-auto max-w-[30rem] sm:max-w-xl md:max-w-3xl lg:max-w-[1000px]">
           <div
-            className="mt-6 flex-1 max-w-[27rem]"
+            className="max-w-[28rem] ml-4 static mt-3 md:sticky md:mt-6 flex-1 md:max-w-[27rem]"
             style={{
-              position: "-webkit-sticky" /* for Safari */,
-              position: "sticky",
+              // position: "-webkit-sticky" /* for Safari */,
+              // position: "sticky",
               top: "6rem",
               alignSelf: "flex-start",
             }}
           >
-            <ProfileFields
-              key={router.query.username}
-              profile={profile}
-              isUserOnOwnAccount={isUserOnOwnAccount}
-            />
-            <FollowingUsers />
-            <FollowerUsers />
+            {loadingPosts ? (
+              <FacebookLoader />
+            ) : (
+              <>
+                <ProfileFields
+                  profile={profile}
+                  isUserOnOwnAccount={isUserOnOwnAccount}
+                />
+                <FollowingUsers
+                  profile={profile}
+                  userFollowStats={userFollowStats}
+                  user={user}
+                />
+                <FollowerUsers />
+              </>
+            )}
           </div>
           <div className="flex-1 flex-grow mt-6 max-w-md md:max-w-lg lg:max-w-2xl ">
             {loadingPosts ? (
@@ -399,6 +408,7 @@ const Name = styled.p`
   top: 135%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-family: inherit;
 `;
 
 const Username = styled.p`
