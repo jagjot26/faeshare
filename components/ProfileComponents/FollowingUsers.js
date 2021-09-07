@@ -4,6 +4,7 @@ import baseUrl from "../../utils/baseUrl";
 import cookie from "js-cookie";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { Facebook } from "react-content-loader";
 
 function FollowingUsers({ profile, userFollowStats, user }) {
   const router = useRouter();
@@ -11,6 +12,7 @@ function FollowingUsers({ profile, userFollowStats, user }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let didCancel = false;
     const getFollowing = async () => {
       setLoading(true);
 
@@ -22,15 +24,18 @@ function FollowingUsers({ profile, userFollowStats, user }) {
           }
         );
 
-        setFollowing(res.data);
+        !didCancel && setFollowing(res.data);
       } catch (error) {
         alert("Error Loading Following");
       }
 
-      setLoading(false);
+      !didCancel && setLoading(false);
     };
 
     getFollowing();
+    return () => {
+      didCancel = true;
+    };
   }, []); //this runs on first component render
 
   return (
@@ -65,23 +70,31 @@ function FollowingUsers({ profile, userFollowStats, user }) {
         )}
       </div>
 
-      {following && following.length > 0 ? (
-        <GridContainer>
-          {following.map((fol) => (
-            <div className="mb-5 cursor-pointer" key={fol.user._id}>
-              <FollowingImage src={fol.user.profilePicUrl} alt="userprof" />
-              <NameOfUser onClick={() => router.push(`/${fol.user.username}`)}>
-                {fol.user.name}
-              </NameOfUser>
-            </div>
-          ))}
-        </GridContainer>
-      ) : profile.user._id === user._id ? (
-        <p className="text-md text-gray-500">
-          You've not followed anyone. What are you waiting for?
-        </p>
+      {loading ? (
+        <Facebook />
       ) : (
-        <p className="text-md text-gray-500">{`${profile.user.name} hasn't followed anyone yet.`}</p>
+        <>
+          {following && following.length > 0 ? (
+            <GridContainer>
+              {following.map((fol) => (
+                <div className="mb-5 cursor-pointer" key={fol.user._id}>
+                  <FollowingImage src={fol.user.profilePicUrl} alt="userprof" />
+                  <NameOfUser
+                    onClick={() => router.push(`/${fol.user.username}`)}
+                  >
+                    {fol.user.name}
+                  </NameOfUser>
+                </div>
+              ))}
+            </GridContainer>
+          ) : profile.user._id === user._id ? (
+            <p className="text-md text-gray-500">
+              You've not followed anyone. What are you waiting for?
+            </p>
+          ) : (
+            <p className="text-md text-gray-500">{`${profile.user.name} hasn't followed anyone yet.`}</p>
+          )}
+        </>
       )}
     </div>
   );

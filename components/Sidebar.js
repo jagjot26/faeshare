@@ -5,6 +5,7 @@ import {
   BellIcon,
   ChatIcon,
   CogIcon,
+  UserGroupIcon,
 } from "@heroicons/react/outline";
 import GroupIcon from "@material-ui/icons/Group";
 import SidebarRow from "./HelperComponents/SidebarRow";
@@ -17,7 +18,16 @@ function Sidebar({ user }) {
         title={user.name}
         route={`/${user.username}`}
       />
-      <SidebarRow Icon={UsersIcon} title="Following" route={"/following"} />
+      <SidebarRow
+        Icon={UsersIcon}
+        title="Following"
+        route={`/user/${user._id}/following`}
+      />
+      <SidebarRow
+        Icon={UserGroupIcon}
+        title="Followers"
+        route={`/user/${user._id}/followers`}
+      />
       <SidebarRow
         Icon={BellIcon}
         title="Notifications"

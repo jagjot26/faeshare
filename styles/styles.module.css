@@ -80,6 +80,25 @@
   }
 }
 
+@keyframes sizeincreaseleft {
+  0% {
+    /* to set it to invisible at first */
+    width: 95%;
+    /* to start it from 100px left of its actual positon */
+  }
+
+  50% {
+    /* transform: translateY(-0.5rem); */
+    /* to move it a bit to the right before it goes back to its actual position at 100% */
+  }
+
+  100% {
+    /* to set it back to visible */
+    width: 100%;
+    /* to move it back to its actual position */
+  }
+}
+
 .fadeinreally {
   animation: fadein 1.3s ease-out;
 }
@@ -90,6 +109,10 @@
 
 .sizeup {
   animation: sizeincup 0.31s ease-out;
+}
+
+.animatesizeincleft {
+  animation: sizeincreaseleft 0.3s ease-out;
 }
 
 .test {

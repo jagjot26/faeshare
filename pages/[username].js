@@ -303,7 +303,12 @@ function ProfilePage({
                   userFollowStats={userFollowStats}
                   user={user}
                 />
-                <FollowerUsers />
+                <FollowerUsers
+                  profile={profile}
+                  userFollowStats={userFollowStats}
+                  user={user}
+                />
+                <div className="h-9"></div>
               </>
             )}
           </div>

@@ -36,11 +36,10 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     ctx.pathname === "/" ||
     ctx.pathname === "/[username]" ||
     ctx.pathname === "/user/[userId]/following" ||
+    ctx.pathname === "/user/[userId]/followers" ||
     ctx.pathname === "/post/[postId]" ||
     ctx.pathname === "/notifications" ||
     ctx.pathname === "/messages" ||
-    ctx.pathname === "/followers" ||
-    ctx.pathname === "/following" ||
     ctx.pathname === "/settings";
   // '/[username] leads to [username].js inside of pages folder
 

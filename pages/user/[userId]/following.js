@@ -91,7 +91,7 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
                           );
                         }}
                       >
-                        <UserAddIcon className="h-6" />
+                        <UserAddIcon className="h-6 " />
                         <p className="ml-1.5">Follow</p>
                       </FollowButton>
                     )}
@@ -171,6 +171,9 @@ const FollowButton = styled.div`
   font-size: 1.1rem;
   font-family: "Inter";
   font-weight: 400;
+  :hover {
+    background-color: rgba(109, 40, 217);
+  }
 `;
 
 const GridContainer = styled.div`

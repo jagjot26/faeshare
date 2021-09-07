@@ -1,12 +1,17 @@
-import { ArrowLeftIcon, SearchIcon } from "@heroicons/react/solid";
+import {
+  ArrowLeftIcon,
+  DotsHorizontalIcon,
+  SearchIcon,
+} from "@heroicons/react/solid";
 import axios from "axios";
-import React from "react";
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import cookie from "js-cookie";
 import baseUrl from "../utils/baseUrl";
 import { Facebook } from "react-content-loader";
 import Link from "next/link";
+// import onClickOutside from "react-onclickoutside";
+import { useClickAway } from "react-use";
 
 let cancel;
 
@@ -53,14 +58,21 @@ function SearchDropdown({ setShowSearchDropdown }) {
     setLoading(false);
   };
 
+  // SearchDropdown.handleClickOutside = () => setShowSearchDropdown(false);
+  const ref = useRef(null);
+  useClickAway(ref, () => {
+    setShowSearchDropdown(false);
+  });
+
   return (
     <div
+      ref={ref}
       style={{
         position: "absolute",
-        top: "0rem",
+        top: "0.1rem",
         left: "0rem",
         minHeight: "6rem",
-        width: "27rem",
+        width: "27.7rem",
         backgroundColor: "white",
         zIndex: "100",
         padding: "0.67rem",
@@ -73,7 +85,7 @@ function SearchDropdown({ setShowSearchDropdown }) {
         <ArrowDiv onClick={() => setShowSearchDropdown(false)}>
           <ArrowLeftIcon className="h-5" />
         </ArrowDiv>
-        <div className="flex mr-2 ml-1 items-center rounded-full bg-gray-100 p-2  h-12 flex-grow">
+        <div className="flex mr-2 ml-1 items-center rounded-full bg-gray-100 p-1 h-12 flex-grow">
           {/* <SearchIcon className="h-5 text-gray-600" /> */}
           <input
             autoFocus={true}
@@ -86,13 +98,17 @@ function SearchDropdown({ setShowSearchDropdown }) {
         </div>
       </div>
       {loading ? (
-        <div className="w-full flex items-center justify-center mt-4">
-          <p className="text-gray-500 text-2xl font-normal">...</p>
+        <div className="w-full flex items-center justify-center mt-5 mb-2">
+          <DotsHorizontalIcon className="h-6 text-gray-400" />
         </div>
       ) : searchResults.length > 0 ? (
         <>
           {searchResults.map((resultUser) => (
-            <Link href={`/${resultUser.username}`} passHref>
+            <Link
+              key={resultUser._id}
+              href={`/${resultUser.username}`}
+              passHref
+            >
               <div
                 onClick={() => setShowSearchDropdown(false)}
                 className="flex items-center space-x-3 mt-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2"
@@ -104,16 +120,20 @@ function SearchDropdown({ setShowSearchDropdown }) {
           ))}
         </>
       ) : (
-        <div className="w-full flex items-center justify-center mt-4">
-          <p className="text-gray-500 text-sm font-light ">
-            Type a letter to begin searching
+        <div className="w-full flex items-center justify-center mt-5 mb-2">
+          <p className="text-gray-400 font-thin ">
+            Start typing to begin searching...
           </p>
         </div>
       )}
     </div>
   );
 }
+// const clickOutsideConfig = {
+//   handleClickOutside: () => SearchDropdown.handleClickOutside,
+// };
 
+// export default onClickOutside(SearchDropdown, clickOutsideConfig);
 export default SearchDropdown;
 
 const ArrowDiv = styled.div`
@@ -127,6 +147,7 @@ const ArrowDiv = styled.div`
 `;
 
 const Image = styled.img`
+  object-fit: cover;
   border-radius: 50%;
   height: 2.7rem;
   width: 2.7rem;

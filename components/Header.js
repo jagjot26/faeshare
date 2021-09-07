@@ -68,7 +68,7 @@ function Header({ user }) {
           onClick={() => setShowSearchDropdown(true)}
           className="flex ml-5 items-center rounded-full bg-gray-100 p-2  h-12"
         >
-          <SearchIcon className="h-5 text-gray-600 px-1.5 md:px-0" />
+          <SearchIcon className="h-5 text-gray-600 px-1.5 md:px-0 cursor-pointer" />
           <input
             className="ml-2 bg-transparent outline-none placeholder-gray-500 w-full font-thin hidden md:flex md:items-center flex-shrink"
             type="text"
@@ -92,10 +92,10 @@ function Header({ user }) {
               ></HeaderIcon>
             </div>
           </Link>
-          <Link href="/following" passHref>
+          <Link href={`/user/${user._id}/following`} passHref>
             <div className="hidden sm:inline-flex">
               <HeaderIcon
-                active={activeRoute("/following")}
+                active={activeRoute(`/user/${user._id}/following`)}
                 Icon={UsersIcon}
                 IconSolid={UsersIconSolid}
               ></HeaderIcon>
