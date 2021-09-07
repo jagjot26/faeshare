@@ -56,6 +56,7 @@ function FollowingUsers({ profile, userFollowStats, user }) {
 
         {following && following.length > 0 && (
           <p
+            onClick={() => router.push(`/user/${profile.user._id}/following`)}
             className="text-md font-normal cursor-pointer select-none text-purple-400 hover:underline"
             style={{ fontFamily: "inherit" }}
           >

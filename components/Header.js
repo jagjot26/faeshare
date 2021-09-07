@@ -24,12 +24,13 @@ import RoundedIcon from "./HelperComponents/RoundedIcon";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Dropdown from "./Dropdown";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import SearchDropdown from "./SearchDropdown";
 
 function Header({ user }) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchDropdown, setShowSearchDropdown] = useState(false);
   const router = useRouter();
   const activeRoute = (path) => {
-    console.log(router.pathname);
     return router.pathname === path;
   };
 
@@ -63,7 +64,10 @@ function Header({ user }) {
           </p>
         </div>
 
-        <div className="flex ml-5 items-center rounded-full bg-gray-100 p-2  h-12">
+        <div
+          onClick={() => setShowSearchDropdown(true)}
+          className="flex ml-5 items-center rounded-full bg-gray-100 p-2  h-12"
+        >
           <SearchIcon className="h-5 text-gray-600 px-1.5 md:px-0" />
           <input
             className="ml-2 bg-transparent outline-none placeholder-gray-500 w-full font-thin hidden md:flex md:items-center flex-shrink"
@@ -72,6 +76,9 @@ function Header({ user }) {
           />
         </div>
       </div>
+      {searchDropdown && (
+        <SearchDropdown setShowSearchDropdown={setShowSearchDropdown} />
+      )}
 
       {/* Mid */}
       <div className="flex justify-center flex-grow">
