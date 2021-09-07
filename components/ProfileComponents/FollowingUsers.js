@@ -89,7 +89,7 @@ function FollowingUsers({ profile, userFollowStats, user }) {
             </GridContainer>
           ) : profile.user._id === user._id ? (
             <p className="text-md text-gray-500">
-              You've not followed anyone. What are you waiting for?
+              {`You've not followed anyone. What are you waiting for?`}
             </p>
           ) : (
             <p className="text-md text-gray-500">{`${profile.user.name} hasn't followed anyone yet.`}</p>

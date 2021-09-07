@@ -85,7 +85,7 @@ function PostCard({ post, user, setPosts, postById }) {
       <Toaster />
       <div className="p-4">
         <div className="flex space-x-3 items-center ml-2 relative">
-          <Image src={post.user.profilePicUrl} />
+          <Image src={post.user.profilePicUrl} alt="userimg" />
           <div>
             <UserPTag
               onClick={() => {

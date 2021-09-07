@@ -113,7 +113,7 @@ function SearchDropdown({ setShowSearchDropdown }) {
                 onClick={() => setShowSearchDropdown(false)}
                 className="flex items-center space-x-3 mt-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2"
               >
-                <Image src={resultUser.profilePicUrl} />
+                <Image src={resultUser.profilePicUrl} alt="userimg" />
                 <Name>{resultUser.name}</Name>
               </div>
             </Link>

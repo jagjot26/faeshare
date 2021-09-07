@@ -60,7 +60,7 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
                 className="flex items-center justify-between p-4 mb-4 rounded-lg bg-white"
               >
                 <div className="flex items-center  ">
-                  <Image src={fol.user.profilePicUrl} />
+                  <Image src={fol.user.profilePicUrl} alt="userimg" />
                   <Name
                     className="ml-3"
                     onClick={() => router.push(`/${fol.user.username}`)}
