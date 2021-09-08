@@ -1,9 +1,11 @@
 import React from "react";
+import styled from "styled-components";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
-function HeaderIcon({ Icon, active, IconSolid }) {
+function HeaderIcon({ Icon, active, IconSolid, unread }) {
   return (
     <div
-      className={`flex items-center cursor-pointer md:px-10 sm:h-14 md:hover:bg-gray-100 rounded-xl  ${
+      className={`select-none relative flex items-center cursor-pointer md:px-10 sm:h-14 md:hover:bg-gray-100 rounded-xl  ${
         active ? "border-purple-500" : ""
       } group`}
     >
@@ -12,6 +14,18 @@ function HeaderIcon({ Icon, active, IconSolid }) {
           active ? "text-purple-500" : ""
         } `}
       />
+
+      {unread && (
+        <FiberManualRecordIcon
+          style={{
+            position: "relative",
+            top: "-.46rem",
+            right: ".75rem",
+            fontSize: "1rem",
+            color: "red",
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -107,6 +107,7 @@ function Header({ user }) {
                 active={activeRoute("/notifications")}
                 Icon={BellIcon}
                 IconSolid={BellIconSolid}
+                unread={user.unreadNotification}
               ></HeaderIcon>
             </div>
           </Link>{" "}

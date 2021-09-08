@@ -174,7 +174,7 @@ const Name = styled.p`
 
 const Title = styled.p`
   user-select: none;
-  font-size: 2rem;
+  font-size: 1.65rem;
   font-weight: 600;
   font-family: Inter;
 `;
@@ -182,7 +182,7 @@ const Title = styled.p`
 const FollowersNumber = styled.p`
   font-family: Inter;
   user-select: none;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 400;
   margin-top: -1.65rem;
 `;
