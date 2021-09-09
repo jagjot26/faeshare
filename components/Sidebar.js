@@ -33,7 +33,7 @@ function Sidebar({ user }) {
         title="Notifications"
         route={"/notifications"}
       />
-      <SidebarRow Icon={ChatIcon} title="Messages" route={"/messages"} />
+      <SidebarRow Icon={ChatIcon} title="Messenger" route={"/chats"} />
     </div>
   );
 }

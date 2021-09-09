@@ -111,10 +111,10 @@ function Header({ user }) {
               ></HeaderIcon>
             </div>
           </Link>{" "}
-          <Link href="/messages" passHref>
+          <Link href="/chats" passHref>
             <div>
               <HeaderIcon
-                active={activeRoute("/messages")}
+                active={activeRoute("/chats")}
                 Icon={ChatAltIcon}
                 IconSolid={ChatAltIconSolid}
               ></HeaderIcon>
