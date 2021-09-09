@@ -11,8 +11,17 @@ require("dotenv").config({ path: "./config.env" });
 const connectDb = require("./utilsServer/connectDb");
 const PORT = process.env.PORT || 3000; //when the app will be deployed to Heroku, Heroku auto adds the port in env variables
 const io = require("socket.io")(server); //socket.io import for server
-const { addUser, removeUser } = require("./utils/roomActions");
-const { loadTexts, sendText } = require("./utils/messageActions");
+const {
+  addUser,
+  removeUser,
+  findConnectedUser,
+} = require("./utils/roomActions");
+const {
+  loadTexts,
+  sendText,
+  setMessageToUnread,
+  getUserInfo,
+} = require("./utils/messageActions");
 
 connectDb();
 app.use(express.json()); //bodyparser- used basically for getting req.body in a good format
@@ -28,10 +37,9 @@ io.on("connection", (socket) => {
     //This is also the name of the room that the socket auto joins on connection
     const users = await addUser(userId, socket.id);
 
-    console.log(users);
-
     setInterval(() => {
       //sending back all the users to the client(who's made this connection) without the logged in user
+      // console.log(users);
       socket.emit("connectedUsers", {
         users: users.filter((user) => user.userId !== userId),
       });
@@ -51,8 +59,22 @@ io.on("connection", (socket) => {
 
   socket.on("sendNewText", async ({ userId, userToTextId, text }) => {
     const { newText, error } = await sendText(userId, userToTextId, text);
+    const { userDetails } = await getUserInfo(newText.sender);
+    const receiverSocket = findConnectedUser(userToTextId); //to find connected user for receiving texts
+
+    //if check to see if that user is still online
+    if (receiverSocket) {
+      //io.to is used to send/emit an event to only a specific socket (or a user in this case). We don't want to send this message to all connected users
+      io.to(receiverSocket.socketId).emit("newTextReceived", {
+        newText,
+        userDetails,
+      });
+    } else {
+      await setMessageToUnread(userToTextId); //notify this user in case he's offline by setting unreadMessage to true in UserModel
+    }
+
     if (!error) {
-      socket.emit("textSent", { newText });
+      socket.emit("textSent", { newText }); //this is for sender and updating state on sender's side
     }
   });
   // DISCONNECT is a reserved keyword in socket v4.0.1, so cleanup is done automatically by socket when user disconnects. NO NEED TO LISTEN TO 'disconnect' event

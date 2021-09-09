@@ -116,16 +116,20 @@ function ChatSearch({ setShowChatSearch, setChats, chats }) {
                     chats &&
                     chats.length > 0 &&
                     chats.find((chat) => chat.textsWith === resultUser._id);
+                  const newChat = {
+                    textsWith: resultUser._id,
+                    name: resultUser.name,
+                    profilePicUrl: resultUser.profilePicUrl,
+                    lastText: "",
+                  };
+
                   if (!isUserInChats) {
-                    setChats((prev) => [
-                      ...prev,
-                      {
-                        textsWith: resultUser._id,
-                        name: resultUser.name,
-                        profilePicUrl: resultUser.profilePicUrl,
-                        lastText: "",
-                      },
-                    ]);
+                    if (!chats) {
+                      setChats([newChat]);
+                    } else {
+                      setChats((prev) => [newChat, ...prev]);
+                    }
+
                     return;
                   }
                 }}

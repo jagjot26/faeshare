@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { LogoutIcon, CogIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { logoutUser } from "../utils/authUser";
+import { useClickAway } from "react-use";
 
-function Dropdown({ user }) {
+function Dropdown({ user, setShowDropdown }) {
+  const ref = useRef(null);
+  useClickAway(ref, () => {
+    setShowDropdown(false);
+  });
+
   return (
     <div
+      ref={ref}
       style={{
         position: "absolute",
         top: "4rem",

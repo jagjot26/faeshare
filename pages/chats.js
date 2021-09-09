@@ -12,6 +12,7 @@ import styled from "styled-components";
 import calculateTime from "../utils/calculateTime";
 import Chat from "../components/Chat/Chat";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import { getUserInfo } from "../utils/messageActions";
 
 function ChatsPage({ user, chatsData }) {
   const [chats, setChats] = useState(chatsData);
@@ -42,16 +43,25 @@ function ChatsPage({ user, chatsData }) {
 
       //listens to the event 'connectedUsers' from the server
       socket.current.on("connectedUsers", ({ users }) => {
-        users.length > 0 && setConnectedUsers(users);
+        setConnectedUsers(users);
       });
     }
 
-    if (chats.length > 0 && !router.query.chat) {
+    if (chats && chats.length > 0 && !router.query.chat) {
       router.push(`/chats?chat=${chats[0].textsWith}`, undefined, {
         shallow: true,
       });
       //shallow is used to push a page on the router stack without refreshing
     }
+
+    // cleanup not needed in v4.0.1
+    // return () => {
+    //   //cleanup function to disconnect the user. This is called on component unmount
+    //   if (socket.current) {
+    //     socket.current.emit("disconnect");
+    //     socket.current.off(); //this removes the event listener
+    //   }
+    // };
   }, []);
 
   //LOAD TEXTS useEffect. Runs whenever router.query.chat changes, so basically whenever the user clicks on a different user
@@ -61,11 +71,10 @@ function ChatsPage({ user, chatsData }) {
         userId: user._id,
         textsWith: router.query.chat,
       });
-      console.log(router.query.chat);
+
       socket.current.on("textsLoaded", ({ chat, textsWithDetails }) => {
         //in the case when previous chat isnt there with a user and logged in user clicks on that user from search
         if (textsWithDetails) {
-          console.log(textsWithDetails.name, textsWithDetails.id);
           setTexts([]);
           setChatUserData({
             name: textsWithDetails.name,
@@ -74,7 +83,7 @@ function ChatsPage({ user, chatsData }) {
           openChatId.current = router.query.chat;
         } else {
           setTexts(chat.texts);
-
+          scrollToBottom();
           setChatUserData({
             name: chat.textsWith.name,
             profilePicUrl: chat.textsWith.profilePicUrl,
@@ -90,7 +99,6 @@ function ChatsPage({ user, chatsData }) {
   }, [router.query.chat]);
 
   const sendText = (e, text) => {
-    console.log(text);
     e.preventDefault();
     if (socket.current) {
       socket.current.emit("sendNewText", {
@@ -99,6 +107,7 @@ function ChatsPage({ user, chatsData }) {
         text,
       });
     }
+    setNewText("");
   };
 
   //Confirming a sent text and receiving the texts useEffect
@@ -123,8 +132,65 @@ function ChatsPage({ user, chatsData }) {
           });
         }
       });
+
+      socket.current.on("newTextReceived", async ({ newText, userDetails }) => {
+        //if router.query.message is same as id of the sender of the new text received, i.e. when the receiver has chat opened and sender sends a text
+        if (newText.sender === openChatId.current) {
+          setTexts((prev) => [...prev, newText]);
+
+          setChats((prev) => {
+            const previousChat = prev.find(
+              (chat) => chat.textsWith === newText.sender
+            );
+            previousChat.lastText = newText.text;
+            previousChat.date = newText.date;
+            return [...prev];
+          });
+        } else {
+          const ifPreviouslyTexted =
+            chats.filter((chat) => chat.textsWith === newText.sender).length >
+            0;
+
+          if (ifPreviouslyTexted) {
+            setChats((prev) => {
+              const previousChat = prev.find(
+                (chat) => chat.textsWith === newText.sender
+              );
+              previousChat.lastText = newText.text;
+              previousChat.date = newText.date;
+              return [...prev];
+            });
+          } else {
+            //if sender and receiver have never messaged before
+
+            const newChat = {
+              textsWith: newText.sender,
+              name: userDetails.name,
+              profilePicUrl: userDetails.profilePicUrl,
+              lastText: newText.text,
+              date: newText.date,
+            };
+            //newChat is added first so that it's at the top of chats and then it's displayed first as we defined it above
+            //chats[0] in useEffect above
+            setChats((prev) => [newChat, ...prev]);
+          }
+        }
+      });
     }
   }, []);
+
+  const endOfMessagesRef = useRef(null);
+
+  const scrollToBottom = () => {
+    endOfMessagesRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  useEffect(() => {
+    texts.length > 0 && scrollToBottom();
+  }, [texts]);
 
   return (
     <div className="bg-gray-100">
@@ -163,7 +229,7 @@ function ChatsPage({ user, chatsData }) {
 
             <div className="mt-4" style={{ borderTop: "1px solid #efefef" }}>
               <>
-                {chats.length > 0 &&
+                {chats && chats.length > 0 ? (
                   chats.map((chat) => (
                     <ChatDiv
                       key={chat.textsWith}
@@ -174,108 +240,128 @@ function ChatsPage({ user, chatsData }) {
                       <div className="relative">
                         <UserImage src={chat.profilePicUrl} alt="userimg" />
                         {connectedUsers.length > 0 &&
-                          connectedUsers.filter(
-                            (user) => user.userId === chat.textsWith
-                          ).length > 0 && (
-                            <FiberManualRecordIcon
-                              style={{
-                                color: "#55d01d",
-                                fontSize: "1.85rem",
-                                position: "absolute",
-                                bottom: "-.5rem",
-                                right: "0rem",
-                              }}
-                            />
-                          )}
+                        connectedUsers.filter(
+                          (user) => user.userId === chat.textsWith
+                        ).length > 0 ? (
+                          <FiberManualRecordIcon
+                            style={{
+                              color: "#55d01d",
+                              fontSize: "1.85rem",
+                              position: "absolute",
+                              bottom: "-.5rem",
+                              right: "0rem",
+                            }}
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </div>
 
                       <div className="ml-1">
                         <Name>{chat.name}</Name>
                         <TextPreview>
-                          {chat.lastText.length > 30
+                          {chat.lastText && chat.lastText.length > 30
                             ? `${chat.lastText.substring(0, 30)}...`
                             : chat.lastText}
                         </TextPreview>
                       </div>
                       {chat.date && <Date>{calculateTime(chat.date)}</Date>}
                     </ChatDiv>
-                  ))}
+                  ))
+                ) : (
+                  <>
+                    <p className="p-5 text-gray-500">
+                      Start a chat with someone!
+                    </p>
+                  </>
+                )}
               </>
             </div>
           </div>
-          <div
-            style={{
-              minWidth: "27rem",
-              flex: "1",
-              borderRight: "1px solid lightgrey",
-              fontFamily: "Inter",
-              height: "calc(100vh - 4.5rem)",
-            }}
-          >
-            <ChatHeaderDiv>
-              {/* using chatUserData here since it updates itself whenever router.query.chat changes as defined in one of the useEffects above */}
-
-              <UserImage src={chatUserData.profilePicUrl} alt="userimg" />
-              <div>
-                <ChatName>{chatUserData.name}</ChatName>
-
-                {connectedUsers.length > 0 &&
-                  connectedUsers.filter(
-                    (user) => user.userId === openChatId.current
-                  ).length > 0 && <LastActive>{"Online"}</LastActive>}
-              </div>
-            </ChatHeaderDiv>
+          {router.query.chat && (
             <div
-              className=" flex flex-col justify-between"
-              style={{ height: "calc(100vh - 10.5rem)" }}
+              style={{
+                minWidth: "27rem",
+                flex: "1",
+                borderRight: "1px solid lightgrey",
+                fontFamily: "Inter",
+                height: "calc(100vh - 4.5rem)",
+              }}
             >
-              <div className="m-4">
-                {texts.length > 0 ? (
-                  texts.map((text, i) => (
-                    <Chat
-                      key={i}
-                      user={user}
-                      text={text}
-                      setTexts={setTexts}
-                      textsWith={openChatId.current}
-                    />
-                  ))
-                ) : (
-                  <div></div>
-                )}
-              </div>
+              <ChatHeaderDiv>
+                {/* using chatUserData here since it updates itself whenever router.query.chat changes as defined in one of the useEffects above */}
+
+                <UserImage src={chatUserData.profilePicUrl} alt="userimg" />
+                <div>
+                  <ChatName>{chatUserData.name}</ChatName>
+
+                  {connectedUsers.length > 0 &&
+                    connectedUsers.filter(
+                      (user) => user.userId === openChatId.current
+                    ).length > 0 && <LastActive>{"Online"}</LastActive>}
+                </div>
+              </ChatHeaderDiv>
               <div
+                className=" flex flex-col justify-between"
                 style={{
-                  borderTop: "1px solid #efefef",
-                  borderBottom: "1px solid #efefef",
+                  height: "calc(100vh - 10.5rem)",
                 }}
               >
-                <form
-                  // onClick={() => setShowChatSearch(true)}
-
-                  className="flex items-center rounded-full bg-gray-100 p-4 m-4 max-h-12"
+                <div
+                  className="mt-3 pl-4 pr-4 overflow-y-auto"
+                  style={{ scrollbarWidth: "thin" }}
                 >
-                  <input
-                    className="bg-transparent outline-none placeholder-gray-500 w-full font-thin hidden md:flex md:items-center flex-shrink"
-                    type="text"
-                    value={newText}
-                    onChange={(e) => {
-                      setNewText(e.target.value);
-                    }}
-                    placeholder="Send a new text..."
-                  />{" "}
-                  <button
-                    hidden
-                    disabled={!newText}
-                    type="submit"
-                    onClick={(e) => sendText(e, newText)}
+                  <>
+                    {" "}
+                    {texts.length > 0 ? (
+                      texts.map((text, i) => (
+                        <Chat
+                          key={i}
+                          user={user}
+                          text={text}
+                          setTexts={setTexts}
+                          textsWith={openChatId.current}
+                        />
+                      ))
+                    ) : (
+                      <div></div>
+                    )}
+                    <EndOfMessage ref={endOfMessagesRef} />
+                  </>
+                </div>
+                <div
+                  style={{
+                    borderTop: "1px solid #efefef",
+                    borderBottom: "1px solid #efefef",
+                  }}
+                >
+                  <form
+                    // onClick={() => setShowChatSearch(true)}
+
+                    className="flex items-center rounded-full bg-gray-100 p-4 m-4 max-h-12"
                   >
-                    Send Message
-                  </button>
-                </form>
+                    <input
+                      className="bg-transparent outline-none placeholder-gray-500 w-full font-thin hidden md:flex md:items-center flex-shrink"
+                      type="text"
+                      value={newText}
+                      onChange={(e) => {
+                        setNewText(e.target.value);
+                      }}
+                      placeholder="Send a new text..."
+                    />{" "}
+                    <button
+                      hidden
+                      disabled={!newText}
+                      type="submit"
+                      onClick={(e) => sendText(e, newText)}
+                    >
+                      Send Message
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
     </div>
@@ -368,4 +454,8 @@ const LastActive = styled.p`
 
 const TextInputDiv = styled.div`
   padding: 1rem;
+`;
+
+const EndOfMessage = styled.div`
+  margin-bottom: 30px;
 `;

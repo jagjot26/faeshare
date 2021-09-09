@@ -117,6 +117,7 @@ function Header({ user }) {
                 active={activeRoute("/chats")}
                 Icon={ChatAltIcon}
                 IconSolid={ChatAltIconSolid}
+                unread={user.unreadMessage}
               ></HeaderIcon>
             </div>
           </Link>
@@ -151,25 +152,25 @@ function Header({ user }) {
           ></RoundedIcon>
         </div>
       </Link>
-      <ClickAwayListener
-        onClickAway={() => {
-          setShowDropdown(false);
+
+      <div
+        className="flex items-center mr-5"
+        onClick={() => {
+          setShowDropdown((prev) => !prev);
         }}
       >
-        <div
-          className="flex items-center mr-5"
-          onClick={() => {
-            setShowDropdown((prev) => !prev);
-          }}
-        >
-          <RoundedIcon
-            stayVisible={true}
-            padding={"px-0.5"}
-            Icon={ArrowDropDownIcon}
-          ></RoundedIcon>
-        </div>
-      </ClickAwayListener>
-      {showDropdown ? <Dropdown user={user} /> : <></>}
+        <RoundedIcon
+          stayVisible={true}
+          padding={"px-0.5"}
+          Icon={ArrowDropDownIcon}
+        ></RoundedIcon>
+      </div>
+
+      {showDropdown ? (
+        <Dropdown user={user} setShowDropdown={setShowDropdown} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

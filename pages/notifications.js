@@ -42,12 +42,15 @@ function Notifications({ user, notifications, errorLoading, userFollowStats }) {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100">
       <Header user={user} />
 
-      <main className="flex">
+      <main
+        className="flex"
+        style={{ height: "calc(100vh - 4.5rem)", overflowY: "auto" }}
+      >
         <Sidebar user={user} />
-        <div className="flex-grow h-screen mx-auto max-w-md md:max-w-lg lg:max-w-2xl bg-white mt-6 p-4 shadow-lg rounded-lg">
+        <div className="flex-grow mx-auto max-w-md md:max-w-lg lg:max-w-2xl bg-white p-4 shadow-lg rounded-lg">
           <div className="flex items-center ml-2">
             <Title>Notifications ·</Title>
             <NotificationCount className="text-gray-500 ml-2">
@@ -83,7 +86,7 @@ function Notifications({ user, notifications, errorLoading, userFollowStats }) {
             </p>
           )}
         </div>
-        <div className="bg-transparent h-screen flex-grow max-w-[250px]"></div>
+        <div className="bg-transparent flex-grow max-w-[250px]"></div>
       </main>
     </div>
   );

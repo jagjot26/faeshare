@@ -10,7 +10,7 @@ const loadTexts = async (userId, textsWith) => {
       (chat) => chat.textsWith._id.toString() === textsWith
     );
     //here, there's no _id after chat.messsagesWith as we haven't populated the data
-    //if we weren't populating, then we would've written chat.messagesWith.toString() since _id field wont be there
+    //if we weren't populating, then we would've written chat.messagesWith since _id field wont be there
 
     if (!chat) {
       const textsWithUser = await UserModel.findById(textsWith);
@@ -31,6 +31,25 @@ const loadTexts = async (userId, textsWith) => {
   }
 };
 
+const getUserInfo = async (userId) => {
+  try {
+    const user = await UserModel.findById(userId);
+    if (user) {
+      const userDetails = {
+        name: user.name,
+        profilePicUrl: user.profilePicUrl,
+        id: user._id,
+      };
+      return {
+        userDetails,
+      };
+    }
+    return;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const sendText = async (userId, userToTextId, text) => {
   try {
     const loggedInUser = await ChatModel.findOne({ user: userId });
@@ -45,9 +64,11 @@ const sendText = async (userId, userToTextId, text) => {
     };
 
     //--SENDER--
-    const previousChat = loggedInUser.chats.find(
-      (chat) => chat.textsWith.toString() === userToTextId
-    );
+    const previousChat =
+      loggedInUser.chats.length > 0 &&
+      loggedInUser.chats.find(
+        (chat) => chat.textsWith.toString() === userToTextId
+      );
 
     if (previousChat) {
       previousChat.texts.push(newText);
@@ -58,14 +79,14 @@ const sendText = async (userId, userToTextId, text) => {
         texts: [newText],
       };
 
-      user.chats.unshift(newChat);
-      await user.save();
+      loggedInUser.chats.unshift(newChat);
+      await loggedInUser.save();
     }
 
     //--RECEIVER
-    const lastChat = textToSendUser.chats.find(
-      (chat) => chat.textsWith.toString() === userId
-    );
+    const lastChat =
+      textToSendUser.chats.length > 0 &&
+      textToSendUser.chats.find((chat) => chat.textsWith.toString() === userId);
     if (lastChat) {
       lastChat.texts.push(newText);
       await textToSendUser.save();
@@ -86,4 +107,19 @@ const sendText = async (userId, userToTextId, text) => {
   }
 };
 
-module.exports = { loadTexts, sendText };
+const setMessageToUnread = async (userId) => {
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user.unreadMessage) {
+      user.unreadMessage = true;
+      await user.save();
+    }
+
+    return;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { loadTexts, sendText, setMessageToUnread, getUserInfo };
