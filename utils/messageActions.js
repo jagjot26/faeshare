@@ -13,16 +13,16 @@ const loadTexts = async (userId, textsWith) => {
     //if we weren't populating, then we would've written chat.messagesWith.toString() since _id field wont be there
 
     if (!chat) {
-      const textsWithUser = await UserModel.findById(textsWith)
+      const textsWithUser = await UserModel.findById(textsWith);
 
       const textsWithDetails = {
         name: textsWithUser.name,
         profilePicUrl: textsWithUser.profilePicUrl,
         id: textsWithUser._id,
-      }
+      };
       return {
-        textsWithDetails
-      }
+        textsWithDetails,
+      };
     }
     return { chat };
   } catch (error) {
@@ -51,42 +51,35 @@ const sendText = async (userId, userToTextId, text) => {
 
     if (previousChat) {
       previousChat.texts.push(newText);
-      await loggedInUser.save()
-    }
- else{
-    const newChat = {
+      await loggedInUser.save();
+    } else {
+      const newChat = {
         textsWith: userToTextId,
-        texts: [
-            newText
-        ]
-    };
+        texts: [newText],
+      };
 
+      user.chats.unshift(newChat);
+      await user.save();
+    }
 
-    user.chats.unshift(newChat)
-    await user.save()
- }
+    //--RECEIVER
+    const lastChat = textToSendUser.chats.find(
+      (chat) => chat.textsWith.toString() === userId
+    );
+    if (lastChat) {
+      lastChat.texts.push(newText);
+      await textToSendUser.save();
+    } else {
+      const newChat = {
+        textsWith: userId,
+        texts: [newText],
+      };
 
- //--RECEIVER
- const lastChat = textToSendUser.chats.map((chat) => chat.textsWith.toString() = userId)
- if(lastChat){
-     lastChat.texts.push(newText)
-     await textToSendUser.save()
- }
- else{
-   const newChat = {
-       textsWith: userId,
-       texts: [
-           newText
-       ]
-   };
+      textToSendUser.chats.unshift(newChat);
+      await textToSendUser.save();
+    }
 
-    textToSendUser.chats.unshift(newChat)
-    await textToSendUser.save()
- }
- 
-
-return {newText}  
-
+    return { newText };
   } catch (error) {
     console.log(error);
     return { error };

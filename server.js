@@ -55,10 +55,10 @@ io.on("connection", (socket) => {
       socket.emit("textSent", { newText });
     }
   });
-  //DISCONNECT is a reserved keyword in socket v4.0.1, so cleanup is done automatically by socket when user disconnects. NO NEED TO LISTEN TO 'disconnect' event
-  // socket.on("disconnect", () => {
-  //   removeUser(socket.id); //removes the connectected client, as socket is basically the client
-  // });
+  // DISCONNECT is a reserved keyword in socket v4.0.1, so cleanup is done automatically by socket when user disconnects. NO NEED TO LISTEN TO 'disconnect' event
+  socket.on("disconnect", () => {
+    removeUser(socket.id); //removes the connectected client, as socket is basically the client
+  });
 });
 //io.on('connection') is triggered by
 //socket.current = io(baseUrl) in messages.js

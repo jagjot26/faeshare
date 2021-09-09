@@ -11,6 +11,7 @@ import { SearchIcon } from "@heroicons/react/outline";
 import styled from "styled-components";
 import calculateTime from "../utils/calculateTime";
 import Chat from "../components/Chat/Chat";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 function ChatsPage({ user, chatsData }) {
   const [chats, setChats] = useState(chatsData);
@@ -18,6 +19,7 @@ function ChatsPage({ user, chatsData }) {
   const socket = useRef();
   const [texts, setTexts] = useState([]);
   const [connectedUsers, setConnectedUsers] = useState([]);
+  const [newText, setNewText] = useState("");
   const [chatUserData, setChatUserData] = useState({
     name: "",
     profilePicUrl: "",
@@ -87,7 +89,9 @@ function ChatsPage({ user, chatsData }) {
     }
   }, [router.query.chat]);
 
-  const sendMsg = (text) => {
+  const sendText = (e, text) => {
+    console.log(text);
+    e.preventDefault();
     if (socket.current) {
       socket.current.emit("sendNewText", {
         userId: user._id,
@@ -123,18 +127,18 @@ function ChatsPage({ user, chatsData }) {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100">
       <Header user={user} />
-      <main className="flex">
+      <main className="flex" style={{ height: "calc(100vh - 4.5rem)" }}>
         <Sidebar user={user} />
-        <div className="flex flex-grow h-screen w-full mx-auto max-w-2xl lg:mx-10 lg:max-w-[65rem] xl:max-w-[70.5rem] bg-white  rounded-lg">
+        <div className="flex flex-grow h-full w-full mx-auto max-w-2xl lg:mx-10 lg:max-w-[65rem] xl:max-w-[70.5rem] bg-white  rounded-lg">
           <div
             style={{
               borderLeft: "1px solid lightgrey",
               borderRight: "1px solid lightgrey",
               fontFamily: "Inter",
             }}
-            className="lg:min-w-[27rem] h-screen relative pt-4"
+            className="lg:min-w-[27rem] relative pt-4"
           >
             <Title>Chats</Title>
             <div
@@ -167,12 +171,29 @@ function ChatsPage({ user, chatsData }) {
                         router.push(`/chats?chat=${chat.textsWith}`)
                       }
                     >
-                      <UserImage src={chat.profilePicUrl} alt="userimg" />
+                      <div className="relative">
+                        <UserImage src={chat.profilePicUrl} alt="userimg" />
+                        {connectedUsers.length > 0 &&
+                          connectedUsers.filter(
+                            (user) => user.userId === chat.textsWith
+                          ).length > 0 && (
+                            <FiberManualRecordIcon
+                              style={{
+                                color: "#55d01d",
+                                fontSize: "1.85rem",
+                                position: "absolute",
+                                bottom: "-.5rem",
+                                right: "0rem",
+                              }}
+                            />
+                          )}
+                      </div>
+
                       <div className="ml-1">
                         <Name>{chat.name}</Name>
                         <TextPreview>
-                          {chat.lastText.length > 20
-                            ? chat.lastText.substring(0, 20)
+                          {chat.lastText.length > 30
+                            ? `${chat.lastText.substring(0, 30)}...`
                             : chat.lastText}
                         </TextPreview>
                       </div>
@@ -188,6 +209,7 @@ function ChatsPage({ user, chatsData }) {
               flex: "1",
               borderRight: "1px solid lightgrey",
               fontFamily: "Inter",
+              height: "calc(100vh - 4.5rem)",
             }}
           >
             <ChatHeaderDiv>
@@ -196,23 +218,62 @@ function ChatsPage({ user, chatsData }) {
               <UserImage src={chatUserData.profilePicUrl} alt="userimg" />
               <div>
                 <ChatName>{chatUserData.name}</ChatName>
-                <LastActive>2:09PM</LastActive>
+
+                {connectedUsers.length > 0 &&
+                  connectedUsers.filter(
+                    (user) => user.userId === openChatId.current
+                  ).length > 0 && <LastActive>{"Online"}</LastActive>}
               </div>
             </ChatHeaderDiv>
-            <div className="relative mt-2">
-              {texts.length > 0 ? (
-                texts.map((text, i) => (
-                  <Chat
-                    key={i}
-                    user={user}
-                    text={text}
-                    setTexts={setTexts}
-                    textsWith={openChatId.current}
-                  />
-                ))
-              ) : (
-                <div>No texts</div>
-              )}
+            <div
+              className=" flex flex-col justify-between"
+              style={{ height: "calc(100vh - 10.5rem)" }}
+            >
+              <div className="m-4">
+                {texts.length > 0 ? (
+                  texts.map((text, i) => (
+                    <Chat
+                      key={i}
+                      user={user}
+                      text={text}
+                      setTexts={setTexts}
+                      textsWith={openChatId.current}
+                    />
+                  ))
+                ) : (
+                  <div></div>
+                )}
+              </div>
+              <div
+                style={{
+                  borderTop: "1px solid #efefef",
+                  borderBottom: "1px solid #efefef",
+                }}
+              >
+                <form
+                  // onClick={() => setShowChatSearch(true)}
+
+                  className="flex items-center rounded-full bg-gray-100 p-4 m-4 max-h-12"
+                >
+                  <input
+                    className="bg-transparent outline-none placeholder-gray-500 w-full font-thin hidden md:flex md:items-center flex-shrink"
+                    type="text"
+                    value={newText}
+                    onChange={(e) => {
+                      setNewText(e.target.value);
+                    }}
+                    placeholder="Send a new text..."
+                  />{" "}
+                  <button
+                    hidden
+                    disabled={!newText}
+                    type="submit"
+                    onClick={(e) => sendText(e, newText)}
+                  >
+                    Send Message
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -271,7 +332,7 @@ const ChatHeaderDiv = styled.div`
   border-bottom: 1px solid #efefef;
   font-family: Inter;
   padding: 1rem 0.9rem;
-  align-items: flex-start;
+  align-items: center;
   column-gap: 0.6rem;
 `;
 const Name = styled.p`
@@ -302,4 +363,9 @@ const LastActive = styled.p`
   user-select: none;
   font-size: 0.9rem;
   color: rgba(107, 114, 128);
+  margin-top: -1.1rem;
+`;
+
+const TextInputDiv = styled.div`
+  padding: 1rem;
 `;
