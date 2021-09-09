@@ -72,7 +72,11 @@ function FollowerUsers({ profile, userFollowStats, user }) {
       {followers && followers.length > 0 ? (
         <GridContainer>
           {followers.map((fol) => (
-            <div className="mb-5 cursor-pointer" key={fol.user._id}>
+            <div
+              className="mb-5 cursor-pointer"
+              key={fol.user._id}
+              onClick={() => router.push(`/${fol.user.username}`)}
+            >
               <FollowersImage src={fol.user.profilePicUrl} alt="userprof" />
               <NameOfUser onClick={() => router.push(`/${fol.user.username}`)}>
                 {fol.user.name}

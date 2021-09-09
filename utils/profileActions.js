@@ -9,8 +9,13 @@ const Axios = axios.create({
   headers: { Authorization: cookie.get("token") },
 });
 
-export const followUser = async (userToFollowId, setUserFollowStats) => {
+export const followUser = async (
+  userToFollowId,
+  setUserFollowStats,
+  setLoadingFollowStats
+) => {
   try {
+    setLoadingFollowStats(true);
     await Axios.post(`/follow/${userToFollowId}`);
 
     setUserFollowStats((prev) => ({
@@ -18,13 +23,19 @@ export const followUser = async (userToFollowId, setUserFollowStats) => {
       following: [...prev.following, { user: userToFollowId }],
     }));
     //userFollowStats consists of followers and following. prev comprises of them both. we're spreading the prev and then updating following with the newly added following. since in followerModel, key is user, we also used user here
+    setLoadingFollowStats(false);
   } catch (error) {
     alert(catchErrors(error));
   }
 };
 
-export const unfollowUser = async (userToUnfollowId, setUserFollowStats) => {
+export const unfollowUser = async (
+  userToUnfollowId,
+  setUserFollowStats,
+  setLoadingFollowStats
+) => {
   try {
+    setLoadingFollowStats(true);
     await Axios.put(`/unfollow/${userToUnfollowId}`);
 
     setUserFollowStats((prev) => ({
@@ -33,6 +44,7 @@ export const unfollowUser = async (userToUnfollowId, setUserFollowStats) => {
         (following) => following.user !== userToUnfollowId
       ),
     })); //removes the userToUnfollow from the following array
+    setLoadingFollowStats(false);
   } catch (error) {
     alert(catchErrors(error));
   }

@@ -77,7 +77,11 @@ function FollowingUsers({ profile, userFollowStats, user }) {
           {following && following.length > 0 ? (
             <GridContainer>
               {following.map((fol) => (
-                <div className="mb-5 cursor-pointer" key={fol.user._id}>
+                <div
+                  className="mb-5 cursor-pointer"
+                  key={fol.user._id}
+                  onClick={() => router.push(`/${fol.user.username}`)}
+                >
                   <FollowingImage src={fol.user.profilePicUrl} alt="userprof" />
                   <NameOfUser
                     onClick={() => router.push(`/${fol.user.username}`)}

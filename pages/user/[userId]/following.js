@@ -12,6 +12,7 @@ import {
 import Header from "../../../components/Header";
 import styled from "styled-components";
 import { followUser, unfollowUser } from "../../../utils/profileActions";
+import Sidebar from "../../../components/Sidebar";
 
 function FollowingPage({ user, userFollowStats, following, errorLoading }) {
   const router = useRouter();
@@ -33,77 +34,85 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
   return (
     <div className="bg-gray-100 h-screen">
       <Header user={user} />
-
-      <div
-        style={{ fontFamily: "Inter" }}
-        className="mx-auto mt-6 max-w-md md:max-w-3xl lg:max-w-[58rem] bg-white p-4 shadow-lg rounded-lg"
+      <main
+        style={{
+          height: "calc(100vh - 4.5rem)",
+          overflowY: "auto",
+          display: "flex",
+        }}
       >
-        <div className="flex items-center ml-2">
-          <Title>Following ·</Title>
-          <FollowingNumber className="text-gray-500 ml-2">
-            {followingArrayState.length}
-          </FollowingNumber>
-        </div>
-        <GridContainer>
-          {followingArrayState.map((fol) => {
-            const isLoggedInUserFollowing =
-              loggedUserFollowStats.following.length > 0 &&
-              loggedUserFollowStats.following.filter(
-                (loggedInUserFollowing) =>
-                  loggedInUserFollowing.user === fol.user._id
-              ).length > 0;
+        <Sidebar user={user} />
+        <div
+          style={{ fontFamily: "Inter" }}
+          className="mx-auto h-full w-full flex-1 max-w-md md:max-w-xl  lg:mx-10  lg:max-w-[59rem] xl:max-w-[63rem] bg-white p-4 shadow-lg rounded-lg"
+        >
+          <div className="flex items-center ml-2">
+            <Title>Following ·</Title>
+            <FollowingNumber className="text-gray-500 ml-2">
+              {followingArrayState.length}
+            </FollowingNumber>
+          </div>
+          <GridContainer className="grid-cols-1 lg:grid-cols-2">
+            {followingArrayState.map((fol) => {
+              const isLoggedInUserFollowing =
+                loggedUserFollowStats.following.length > 0 &&
+                loggedUserFollowStats.following.filter(
+                  (loggedInUserFollowing) =>
+                    loggedInUserFollowing.user === fol.user._id
+                ).length > 0;
 
-            return (
-              <div
-                style={{ border: "1px solid #eee" }}
-                key={fol.user._id}
-                className="flex items-center justify-between p-4 mb-4 rounded-lg bg-white"
-              >
-                <div className="flex items-center  ">
-                  <Image src={fol.user.profilePicUrl} alt="userimg" />
-                  <Name
-                    className="ml-3"
-                    onClick={() => router.push(`/${fol.user.username}`)}
-                  >
-                    {fol.user.name}
-                  </Name>
+              return (
+                <div
+                  style={{ border: "1px solid #eee" }}
+                  key={fol.user._id}
+                  className="flex items-center justify-between p-4 mb-4 rounded-lg bg-white"
+                >
+                  <div className="flex items-center  ">
+                    <Image src={fol.user.profilePicUrl} alt="userimg" />
+                    <Name
+                      className="ml-3"
+                      onClick={() => router.push(`/${fol.user.username}`)}
+                    >
+                      {fol.user.name}
+                    </Name>
+                  </div>
+                  {fol.user._id !== user._id ? (
+                    <>
+                      {isLoggedInUserFollowing ? (
+                        <FollowButton
+                          onClick={async () => {
+                            await unfollowUser(
+                              fol.user._id,
+                              setLoggedUserFollowStats
+                            );
+                          }}
+                        >
+                          <CheckCircleIcon className="h-6" />
+                          <p className="ml-1.5">Following</p>
+                        </FollowButton>
+                      ) : (
+                        <FollowButton
+                          onClick={async () => {
+                            await followUser(
+                              fol.user._id,
+                              setLoggedUserFollowStats
+                            );
+                          }}
+                        >
+                          <UserAddIcon className="h-6 " />
+                          <p className="ml-1.5">Follow</p>
+                        </FollowButton>
+                      )}
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
-                {fol.user._id !== user._id ? (
-                  <>
-                    {isLoggedInUserFollowing ? (
-                      <FollowButton
-                        onClick={async () => {
-                          await unfollowUser(
-                            fol.user._id,
-                            setLoggedUserFollowStats
-                          );
-                        }}
-                      >
-                        <CheckCircleIcon className="h-6" />
-                        <p className="ml-1.5">Following</p>
-                      </FollowButton>
-                    ) : (
-                      <FollowButton
-                        onClick={async () => {
-                          await followUser(
-                            fol.user._id,
-                            setLoggedUserFollowStats
-                          );
-                        }}
-                      >
-                        <UserAddIcon className="h-6 " />
-                        <p className="ml-1.5">Follow</p>
-                      </FollowButton>
-                    )}
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-            );
-          })}
-        </GridContainer>
-      </div>
+              );
+            })}
+          </GridContainer>
+        </div>
+      </main>
     </div>
   );
 }
@@ -178,7 +187,6 @@ const FollowButton = styled.div`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   column-gap: 0.9rem;
 `;
 

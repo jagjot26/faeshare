@@ -60,6 +60,7 @@ function ProfilePage({
 
   //state for follow stats
   const [loggedUserFollowStats, setUserFollowStats] = useState(userFollowStats);
+  const [loadingFollowStats, setLoadingFollowStats] = useState(false);
 
   const isLoggedInUserFollowing =
     loggedUserFollowStats.following.length > 0 &&
@@ -224,7 +225,11 @@ function ProfilePage({
               (isLoggedInUserFollowing ? (
                 <FollowButton
                   onClick={async () => {
-                    await unfollowUser(profile.user._id, setUserFollowStats);
+                    await unfollowUser(
+                      profile.user._id,
+                      setUserFollowStats,
+                      setLoadingFollowStats
+                    );
                   }}
                 >
                   <CheckCircleIcon className="h-6" />
@@ -233,7 +238,11 @@ function ProfilePage({
               ) : (
                 <FollowButton
                   onClick={async () => {
-                    await followUser(profile.user._id, setUserFollowStats);
+                    await followUser(
+                      profile.user._id,
+                      setUserFollowStats,
+                      setLoadingFollowStats
+                    );
                   }}
                 >
                   <UserAddIcon className="h-6" />
@@ -278,7 +287,7 @@ function ProfilePage({
       </div>
       <div
         className="bg-gray-100 w-full"
-        style={{ marginTop: ".18rem", minHeight: "20rem" }}
+        style={{ marginTop: ".18rem", minHeight: "calc(100vh - 26rem)" }}
       >
         <div className=" md:flex space-x-4 mx-auto max-w-[30rem] sm:max-w-xl md:max-w-3xl lg:max-w-[1000px]">
           <div
@@ -298,16 +307,26 @@ function ProfilePage({
                   profile={profile}
                   isUserOnOwnAccount={isUserOnOwnAccount}
                 />
-                <FollowingUsers
-                  profile={profile}
-                  userFollowStats={userFollowStats}
-                  user={user}
-                />
-                <FollowerUsers
-                  profile={profile}
-                  userFollowStats={userFollowStats}
-                  user={user}
-                />
+
+                {loadingFollowStats ? (
+                  <FacebookLoader />
+                ) : (
+                  <FollowingUsers
+                    profile={profile}
+                    userFollowStats={userFollowStats}
+                    user={user}
+                  />
+                )}
+                {loadingFollowStats ? (
+                  <FacebookLoader />
+                ) : (
+                  <FollowerUsers
+                    profile={profile}
+                    userFollowStats={userFollowStats}
+                    user={user}
+                  />
+                )}
+
                 <div className="h-9"></div>
               </>
             )}
