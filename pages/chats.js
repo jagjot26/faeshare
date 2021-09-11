@@ -13,6 +13,7 @@ import calculateTime from "../utils/calculateTime";
 import Chat from "../components/Chat/Chat";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { getUserInfo } from "../utils/messageActions";
+import Loader from "react-loader-spinner";
 
 function ChatsPage({ user, chatsData }) {
   const [chats, setChats] = useState(chatsData);
@@ -288,19 +289,32 @@ function ChatsPage({ user, chatsData }) {
                 height: "calc(100vh - 4.5rem)",
               }}
             >
-              <ChatHeaderDiv>
-                {/* using chatUserData here since it updates itself whenever router.query.chat changes as defined in one of the useEffects above */}
+              {chatUserData ? (
+                <ChatHeaderDiv>
+                  {/* using chatUserData here since it updates itself whenever router.query.chat changes as defined in one of the useEffects above */}
 
-                <UserImage src={chatUserData.profilePicUrl} alt="userimg" />
-                <div>
-                  <ChatName>{chatUserData.name}</ChatName>
+                  <UserImage src={chatUserData.profilePicUrl} alt="userimg" />
+                  <div>
+                    <ChatName>{chatUserData.name}</ChatName>
 
-                  {connectedUsers.length > 0 &&
-                    connectedUsers.filter(
-                      (user) => user.userId === openChatId.current
-                    ).length > 0 && <LastActive>{"Online"}</LastActive>}
-                </div>
-              </ChatHeaderDiv>
+                    {connectedUsers.length > 0 &&
+                      connectedUsers.filter(
+                        (user) => user.userId === openChatId.current
+                      ).length > 0 && <LastActive>{"Online"}</LastActive>}
+                  </div>
+                </ChatHeaderDiv>
+              ) : (
+                <>
+                  <Loader
+                    type="Puff"
+                    color="black"
+                    height={20}
+                    width={20}
+                    timeout={5000} //3 secs
+                  />
+                </>
+              )}
+
               <div
                 className=" flex flex-col justify-between"
                 style={{

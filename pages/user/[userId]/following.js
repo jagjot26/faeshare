@@ -44,7 +44,7 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
         <Sidebar user={user} />
         <div
           style={{ fontFamily: "Inter" }}
-          className="mx-auto h-full w-full flex-1 max-w-md md:max-w-xl  lg:mx-10  lg:max-w-[59rem] xl:max-w-[63rem] bg-white p-4 shadow-lg rounded-lg"
+          className="mx-auto h-full w-full flex-1 max-w-md md:max-w-xl lg:max-w-[61.5rem] xl:max-w-[67rem] bg-white p-4 shadow-lg rounded-lg"
         >
           <div className="flex items-center ml-2">
             <Title>Following ·</Title>
@@ -112,6 +112,7 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
             })}
           </GridContainer>
         </div>
+        <div className="w-10"></div>
       </main>
     </div>
   );
