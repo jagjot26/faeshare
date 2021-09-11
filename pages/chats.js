@@ -14,6 +14,7 @@ import Chat from "../components/Chat/Chat";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { getUserInfo } from "../utils/messageActions";
 import Loader from "react-loader-spinner";
+import cookie from "js-cookie";
 
 function ChatsPage({ user, chatsData }) {
   const [chats, setChats] = useState(chatsData);
@@ -192,6 +193,24 @@ function ChatsPage({ user, chatsData }) {
   useEffect(() => {
     texts.length > 0 && scrollToBottom();
   }, [texts]);
+
+  useEffect(() => {
+    const markMessagesAsRead = async () => {
+      try {
+        await axios.post(
+          `${baseUrl}/api/chats`,
+          {},
+          {
+            headers: { Authorization: cookie.get("token") },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    markMessagesAsRead();
+  }, []);
 
   return (
     <div className="bg-gray-100">
