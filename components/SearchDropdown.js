@@ -69,13 +69,13 @@ function SearchDropdown({ setShowSearchDropdown }) {
       ref={ref}
       style={{
         position: "absolute",
-        top: "0.1rem",
+        top: "0rem",
         left: "0rem",
         minHeight: "6rem",
-        width: "27.7rem",
+        width: "17.9rem",
         backgroundColor: "white",
         zIndex: "100",
-        padding: "0.67rem",
+        padding: "0.5rem",
         borderRadius: "0.7rem",
         boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         fontFamily: "Inter",
@@ -121,9 +121,7 @@ function SearchDropdown({ setShowSearchDropdown }) {
         </>
       ) : (
         <div className="w-full flex items-center justify-center mt-5 mb-2">
-          <p className="text-gray-400 font-thin ">
-            Start typing to begin searching...
-          </p>
+          <p className="text-gray-400 font-thin ">Start typing...</p>
         </div>
       )}
     </div>

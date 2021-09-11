@@ -35,7 +35,7 @@ function Header({ user }) {
   };
 
   return (
-    <div className="flex bg-white sticky top-0 z-50 shadow-lg">
+    <div className="flex bg-white sticky top-0 z-50 shadow-lg h-16 items-center">
       {/* Left */}
       <div className="ml-2 sm:ml-5 p-1 flex items-center">
         <div className="hidden sm:flex items-center">
@@ -47,7 +47,7 @@ function Header({ user }) {
               fontSize: "1.8rem",
             }}
           >
-            faeshare
+            fae
           </p>
         </div>
 
@@ -66,11 +66,12 @@ function Header({ user }) {
 
         <div
           onClick={() => setShowSearchDropdown(true)}
-          className="flex ml-5 items-center rounded-full bg-gray-100 p-2  h-12"
+          className="flex ml-3 items-center rounded-full bg-gray-100 p-2  h-12"
         >
-          <SearchIcon className="h-5 text-gray-600 px-1.5 md:px-0 cursor-pointer" />
+          <SearchIcon className="h-5 text-gray-600 px-1.5 lg:px-0 cursor-pointer" />
           <input
-            className="ml-2 bg-transparent outline-none placeholder-gray-500 w-full font-thin hidden md:flex md:items-center flex-shrink"
+            className="ml-2 bg-transparent outline-none placeholder-gray-500 font-thin hidden lg:flex md:items-center flex-shrink"
+            style={{ width: "7.5rem" }}
             type="text"
             placeholder="Search users"
           />
@@ -82,7 +83,7 @@ function Header({ user }) {
 
       {/* Mid */}
       <div className="flex justify-center flex-grow">
-        <div className="flex items-center space-x-8 md:space-x-2 lg:space-x-5">
+        <div className="flex items-center space-x-4 md:space-x-4 lg:space-x-8">
           <Link href="/" passHref>
             <div>
               <HeaderIcon
@@ -126,7 +127,7 @@ function Header({ user }) {
 
       {/* Right */}
       <Link href={`/${user.username}`} passHref>
-        <div className="flex items-center h-12 sm:hover:bg-gray-200 px-1 rounded-3xl m-3 cursor-pointer">
+        <div className="flex lg:ml-10 items-center h-12 sm:hover:bg-gray-200 px-1 rounded-3xl m-3 cursor-pointer">
           <Image
             className="rounded-full mr-3 hidden sm:inline-flex"
             src={user.profilePicUrl}

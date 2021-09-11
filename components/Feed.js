@@ -46,7 +46,7 @@ function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
 
   return (
     <>
-      <div className="flex-grow h-full pt-6 mr-5 xl:mr-40 md:ml-0 md:mr-0  scrollbar-hide">
+      <div className="flex-grow h-full pt-6 mr-5 md:ml-auto  scrollbar-hide">
         <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl">
           <InputBox
             user={user}

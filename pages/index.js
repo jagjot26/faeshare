@@ -6,9 +6,11 @@ import { parseCookies } from "nookies";
 import Feed from "../components/Feed";
 import baseUrl from "../utils/baseUrl";
 import styles from "../styles/styles.module.css";
+import RightSideColumn from "../components/RightSideColumn";
 
-function Home({ user, postsData, errorLoading }) {
+function Home({ user, postsData, chatsData, errorLoading }) {
   console.log(`no. of posts on index: ${postsData.length}`);
+  console.log(`chat length : ${chatsData.length}`);
   return (
     <>
       <div className="bg-gray-100 min-h-screen">
@@ -25,6 +27,7 @@ function Home({ user, postsData, errorLoading }) {
               sizeIncUp: styles.sizeup,
             }}
           />
+          <RightSideColumn chatsData={chatsData} />
         </main>
       </div>
     </>
@@ -41,7 +44,11 @@ Home.getInitialProps = async (ctx) => {
       // pageNumber set to 1
     });
 
-    return { postsData: res.data };
+    const chatRes = await axios.get(`${baseUrl}/api/chats`, {
+      headers: { Authorization: token },
+    });
+
+    return { postsData: res.data, chatsData: chatRes.data };
   } catch (error) {
     return { errorLoading: true };
   }
