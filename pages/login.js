@@ -14,8 +14,10 @@ import {
 import ErrorComponent from "../components/HelperComponents/Error";
 import loaderGif from "../logo/chat.gif";
 import { ThreeBounce } from "better-react-spinkit";
+import { useRouter } from "next/router";
 
 function Login() {
+  const router = useRouter();
   const [visibility, setVisibility] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);

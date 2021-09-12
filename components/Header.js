@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import ClickAwayListener from "react-click-away-listener";
 import {
   SearchIcon,
   HomeIcon,
@@ -23,7 +23,6 @@ import Link from "next/link";
 import RoundedIcon from "./HelperComponents/RoundedIcon";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Dropdown from "./Dropdown";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import SearchDropdown from "./SearchDropdown";
 
 function Header({ user }) {
@@ -153,22 +152,27 @@ function Header({ user }) {
           ></RoundedIcon>
         </div>
       </Link>
-
-      <div
-        className="flex items-center mr-5"
-        onClick={() => {
-          setShowDropdown((prev) => !prev);
-        }}
-      >
-        <RoundedIcon
-          stayVisible={true}
-          padding={"px-0.5"}
-          Icon={ArrowDropDownIcon}
-        ></RoundedIcon>
-      </div>
+      <ClickAwayListener onClickAway={() => setShowDropdown(false)}>
+        <div
+          onClick={() => {
+            setShowDropdown((prev) => !prev);
+          }}
+          className="flex items-center mr-5"
+        >
+          <RoundedIcon
+            stayVisible={true}
+            padding={"px-0.5"}
+            Icon={ArrowDropDownIcon}
+          ></RoundedIcon>
+        </div>
+      </ClickAwayListener>
 
       {showDropdown ? (
-        <Dropdown user={user} setShowDropdown={setShowDropdown} />
+        <Dropdown
+          user={user}
+          setShowDropdown={setShowDropdown}
+          showDropdown={showDropdown}
+        />
       ) : (
         <></>
       )}

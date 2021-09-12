@@ -15,6 +15,7 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { getUserInfo } from "../utils/messageActions";
 import Loader from "react-loader-spinner";
 import cookie from "js-cookie";
+import { Facebook } from "react-content-loader";
 
 function ChatsPage({ user, chatsData }) {
   const [chats, setChats] = useState(chatsData);
@@ -49,7 +50,16 @@ function ChatsPage({ user, chatsData }) {
       });
     }
 
-    if (chats && chats.length > 0 && !router.query.chat) {
+    console.log(router.pathname);
+    if (
+      chats &&
+      chats.length > 0 &&
+      !router.query.chat &&
+      router.pathname === "/chats"
+    ) {
+      if (!cookie.get("token")) {
+        return;
+      }
       router.push(`/chats?chat=${chats[0].textsWith}`, undefined, {
         shallow: true,
       });
@@ -59,10 +69,11 @@ function ChatsPage({ user, chatsData }) {
     // cleanup not needed in v4.0.1
     // return () => {
     //   //cleanup function to disconnect the user. This is called on component unmount
-    //   if (socket.current) {
-    //     socket.current.emit("disconnect");
-    //     socket.current.off(); //this removes the event listener
-    //   }
+    //   // if (socket.current) {
+    //   //   socket.current.emit("disconnect");
+    //   //   socket.current.off(); //this removes the event listener
+    //   // }
+    //   console.log("exiting chat");
     // };
   }, []);
 
@@ -215,12 +226,9 @@ function ChatsPage({ user, chatsData }) {
   return (
     <div className="bg-gray-100">
       <Header user={user} />
-      <main
-        className="flex lg:space-x-6"
-        style={{ height: "calc(100vh - 4.5rem)" }}
-      >
-        <Sidebar user={user} />
-        <div className="flex flex-grow h-full w-full mx-auto max-w-2xl lg:max-w-[65rem] xl:max-w-[70.5rem] bg-white  rounded-lg">
+      <main className="flex" style={{ height: "calc(100vh - 4.5rem)" }}>
+        <Sidebar user={user} maxWidth={"250px"} />
+        <div className="flex flex-grow mx-auto h-full w-full max-w-2xl lg:max-w-[65rem] xl:max-w-[70.5rem] bg-white  rounded-lg">
           <div
             style={{
               borderLeft: "1px solid lightgrey",
@@ -288,7 +296,9 @@ function ChatsPage({ user, chatsData }) {
                             : chat.lastText}
                         </TextPreview>
                       </div>
-                      {chat.date && <Date>{calculateTime(chat.date)}</Date>}
+                      {chat.date && (
+                        <Date>{calculateTime(chat.date, true)}</Date>
+                      )}
                     </ChatDiv>
                   ))
                 ) : (
@@ -311,7 +321,7 @@ function ChatsPage({ user, chatsData }) {
                 height: "calc(100vh - 4.5rem)",
               }}
             >
-              {chatUserData ? (
+              {chatUserData && chatUserData.profilePicUrl ? (
                 <ChatHeaderDiv>
                   {/* using chatUserData here since it updates itself whenever router.query.chat changes as defined in one of the useEffects above */}
 
@@ -326,15 +336,12 @@ function ChatsPage({ user, chatsData }) {
                   </div>
                 </ChatHeaderDiv>
               ) : (
-                <>
-                  <Loader
-                    type="Puff"
-                    color="black"
-                    height={20}
-                    width={20}
-                    timeout={5000} //3 secs
-                  />
-                </>
+                <div
+                  className="max-w-[28rem]"
+                  style={{ padding: "1rem 0.9rem" }}
+                >
+                  <Facebook />
+                </div>
               )}
 
               <div

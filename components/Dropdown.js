@@ -6,17 +6,19 @@ import { logoutUser } from "../utils/authUser";
 import { useClickAway } from "react-use";
 import { useRouter } from "next/router";
 
-function Dropdown({ user, setShowDropdown }) {
-  const ref = useRef(null);
-  useClickAway(ref, () => {
-    setShowDropdown(false);
-  });
+function Dropdown({ user, showDropdown, setShowDropdown }) {
+  // const ref = useRef(null);
+  // useClickAway(ref, () => {
+  //   if (showDropdown) {
+  //     setShowDropdown(false);
+  //   }
+  // });
 
   const router = useRouter();
 
   return (
     <div
-      ref={ref}
+      // ref={ref}
       style={{
         position: "absolute",
         top: "4rem",

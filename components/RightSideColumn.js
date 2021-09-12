@@ -122,7 +122,7 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
                             );
                           }}
                         >
-                          <UserAddIcon className="h-6 " />
+                          <UserAddIcon className="h-6 w-6" />
                         </FollowButton>
                       )}
                     </>
@@ -160,7 +160,7 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
               </div>
               {chat.date && (
                 <Date className="hidden xl:flex">
-                  {calculateTime(chat.date)}
+                  {calculateTime(chat.date, true)}
                 </Date>
               )}
             </ChatDiv>

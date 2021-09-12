@@ -36,14 +36,13 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
     <div className="bg-gray-100 h-screen">
       <Header user={user} />
       <main
-        className="space-x-6"
         style={{
           height: "calc(100vh - 4.5rem)",
           overflowY: "auto",
           display: "flex",
         }}
       >
-        <Sidebar user={user} topDist={"0"} />
+        <Sidebar user={user} topDist={"0"} maxWidth={"250px"} />
         <div
           style={{ fontFamily: "Inter" }}
           className="mx-auto h-full w-full flex-1 max-w-md md:max-w-xl lg:max-w-[61.5rem] xl:max-w-[67rem] bg-white p-4 shadow-lg rounded-lg"
