@@ -305,7 +305,7 @@ router.post("/settings/messagePopup", authMiddleware, async (req, res) => {
 //Get all followers of all users and then return the first 5 results from top to bottom;
 router.get("/home/youMayLikeToFollow", authMiddleware, async (req, res) => {
   try {
-    const users = await FollowerModel.find({}).populate("user");
+    const users = await FollowerModel.find({}).populate("user").limit(4);
     return res.json(users);
   } catch (error) {
     console.log(error);
