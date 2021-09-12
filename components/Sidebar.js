@@ -12,7 +12,10 @@ import SidebarRow from "./HelperComponents/SidebarRow";
 
 function Sidebar({ user }) {
   return (
-    <div className="p-2 mt-5 max-w-[600px] xl:min-w-[300px] ">
+    <div
+      className="p-2 max-w-[600px] xl:min-w-[300px] sticky"
+      style={{ alignSelf: "flex-start", top: "4rem", fontFamily: "Inter" }}
+    >
       <SidebarRow
         src={user.profilePicUrl}
         title={user.name}

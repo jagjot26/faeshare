@@ -10,9 +10,9 @@ function SidebarRow({ Icon, title, src, route }) {
         {Icon && <Icon style={{ color: "#7d67e9" }} className="h-9 w-9" />}
         <p
           style={{
-            fontFamily: "Roboto",
-            fontWeight: "400",
-            fontSize: "1.12rem",
+            fontFamily: "Inter",
+            fontWeight: "500",
+            fontSize: "1.05rem",
           }}
           className="hidden sm:inline-flex text-l"
         >

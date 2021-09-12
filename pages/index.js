@@ -8,7 +8,7 @@ import baseUrl from "../utils/baseUrl";
 import styles from "../styles/styles.module.css";
 import RightSideColumn from "../components/RightSideColumn";
 
-function Home({ user, postsData, chatsData, errorLoading }) {
+function Home({ user, userFollowStats, postsData, chatsData, errorLoading }) {
   console.log(`no. of posts on index: ${postsData.length}`);
   console.log(`chat length : ${chatsData.length}`);
   return (
@@ -16,7 +16,7 @@ function Home({ user, postsData, chatsData, errorLoading }) {
       <div className="bg-gray-100 min-h-screen">
         <Header user={user} />
 
-        <main className="flex ">
+        <main className="flex">
           <Sidebar user={user} />
           <Feed
             user={user}
@@ -27,7 +27,11 @@ function Home({ user, postsData, chatsData, errorLoading }) {
               sizeIncUp: styles.sizeup,
             }}
           />
-          <RightSideColumn chatsData={chatsData} />
+          <RightSideColumn
+            chatsData={chatsData}
+            userFollowStats={userFollowStats}
+            user={user}
+          />
         </main>
       </div>
     </>

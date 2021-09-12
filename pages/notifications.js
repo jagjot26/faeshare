@@ -86,7 +86,7 @@ function Notifications({ user, notifications, errorLoading, userFollowStats }) {
             </p>
           )}
         </div>
-        <div className="bg-transparent flex-grow max-w-[250px]"></div>
+        <div className="bg-transparent flex-grow max-w-[290px]"></div>
       </main>
     </div>
   );
