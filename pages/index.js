@@ -9,8 +9,6 @@ import styles from "../styles/styles.module.css";
 import RightSideColumn from "../components/RightSideColumn";
 
 function Home({ user, userFollowStats, postsData, chatsData, errorLoading }) {
-  console.log(`no. of posts on index: ${postsData.length}`);
-  console.log(`chat length : ${chatsData.length}`);
   return (
     <>
       <div className="bg-gray-100 min-h-screen">

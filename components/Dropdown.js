@@ -4,12 +4,15 @@ import { LogoutIcon, CogIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { logoutUser } from "../utils/authUser";
 import { useClickAway } from "react-use";
+import { useRouter } from "next/router";
 
 function Dropdown({ user, setShowDropdown }) {
   const ref = useRef(null);
   useClickAway(ref, () => {
     setShowDropdown(false);
   });
+
+  const router = useRouter();
 
   return (
     <div
@@ -72,7 +75,7 @@ function Dropdown({ user, setShowDropdown }) {
           <p>Settings</p>
         </ButtonDiv>
       </Link>
-      <ButtonDiv onClick={() => logoutUser(user.email)}>
+      <ButtonDiv onClick={() => logoutUser(user.email, router)}>
         <Icondiv>
           <LogoutIcon style={{ height: "1.5rem" }} />
         </Icondiv>

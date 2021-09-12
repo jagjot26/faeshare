@@ -194,23 +194,23 @@ function ChatsPage({ user, chatsData }) {
     texts.length > 0 && scrollToBottom();
   }, [texts]);
 
-  useEffect(() => {
-    const markMessagesAsRead = async () => {
-      try {
-        await axios.post(
-          `${baseUrl}/api/chats`,
-          {},
-          {
-            headers: { Authorization: cookie.get("token") },
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  // useEffect(() => {
+  //   const markMessagesAsRead = async () => {
+  //     try {
+  //       await axios.post(
+  //         `${baseUrl}/api/chats`,
+  //         {},
+  //         {
+  //           headers: { Authorization: cookie.get("token") },
+  //         }
+  //       );
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-    markMessagesAsRead();
-  }, []);
+  //   markMessagesAsRead();
+  // }, []);
 
   return (
     <div className="bg-gray-100">

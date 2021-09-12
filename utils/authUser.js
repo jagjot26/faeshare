@@ -55,9 +55,8 @@ const setToken = (token) => {
   Router.push("/");
 };
 
-export const logoutUser = (email) => {
+export const logoutUser = (email, router) => {
   cookie.set("userEmail", email); //this cookie is set to auto set email field next time the user is on /login page
   cookie.remove("token");
-  Router.push("/login");
-  Router.reload(); //very similar to clicking the browser's refresh button
+  router.push("/login");
 };

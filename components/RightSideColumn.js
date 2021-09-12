@@ -52,7 +52,7 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
       style={{ alignSelf: "flex-start", top: "4rem" }}
     >
       <Title>Who to follow</Title>
-      {usersToFollow ? (
+      {usersToFollow && usersToFollow.length > 0 ? (
         usersToFollow.map((fol) => {
           const isLoggedInUserFollowing =
             loggedInUserFollowStats.following.length > 0 &&
@@ -62,7 +62,7 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
             ).length > 0;
 
           return (
-            <>
+            <div key={fol.user._id}>
               {fol.user._id !== user._id && (
                 <div
                   style={{ border: ".5px solid lightgrey" }}
@@ -131,7 +131,7 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
                   )}
                 </div>
               )}
-            </>
+            </div>
           );
         })
       ) : (

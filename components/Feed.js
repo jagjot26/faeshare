@@ -54,7 +54,7 @@ function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
             increaseSizeAnim={increaseSizeAnim}
           />
 
-          {posts.length === 0 || errorLoading ? (
+          {(posts && posts.length === 0) || errorLoading ? (
             <InfoBox
               Icon={EmojiSadIcon}
               message="Sorry, no posts..."

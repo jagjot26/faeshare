@@ -97,6 +97,7 @@ router.post("/", async (req, res) => {
     //---NOTIFICATION MODEL---
     await new NotificationModel({ user: user._id, notifications: [] }).save();
 
+    await new ChatModel({ user: user._id, chats: [] }).save();
     // await new ChatModel({ user: user._id, chats: [] }).save();
 
     //JWT

@@ -72,7 +72,6 @@ const sendText = async (userId, userToTextId, text) => {
 
     if (previousChat) {
       previousChat.texts.push(newText);
-      await loggedInUser.save();
     } else {
       const newChat = {
         textsWith: userToTextId,
@@ -80,16 +79,14 @@ const sendText = async (userId, userToTextId, text) => {
       };
 
       loggedInUser.chats.unshift(newChat);
-      await loggedInUser.save();
     }
-
+    await loggedInUser.save();
     //--RECEIVER
     const lastChat =
       textToSendUser.chats.length > 0 &&
       textToSendUser.chats.find((chat) => chat.textsWith.toString() === userId);
     if (lastChat) {
       lastChat.texts.push(newText);
-      await textToSendUser.save();
     } else {
       const newChat = {
         textsWith: userId,
@@ -97,9 +94,8 @@ const sendText = async (userId, userToTextId, text) => {
       };
 
       textToSendUser.chats.unshift(newChat);
-      await textToSendUser.save();
     }
-
+    await textToSendUser.save();
     return { newText };
   } catch (error) {
     console.log(error);
