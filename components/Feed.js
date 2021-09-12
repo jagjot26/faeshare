@@ -54,35 +54,39 @@ function Feed({ user, postsData, errorLoading, increaseSizeAnim }) {
             increaseSizeAnim={increaseSizeAnim}
           />
 
-          {(posts && posts.length === 0) || errorLoading ? (
-            <InfoBox
-              Icon={EmojiSadIcon}
-              message="Sorry, no posts..."
-              content="Please follow another user or create a new post to start seeing posts."
-            ></InfoBox>
+          {posts ? (
+            posts.length === 0 || errorLoading ? (
+              <InfoBox
+                Icon={EmojiSadIcon}
+                message="Sorry, no posts..."
+                content="Please follow another user or create a new post to start seeing posts."
+              ></InfoBox>
+            ) : (
+              <InfiniteScroll
+                /* next is the function for fetching data from backend when the user reaches the end */
+                hasMore={hasMore}
+                next={fetchDataOnScroll}
+                loader={<Facebook />}
+                endMessage={
+                  <div className="w-full mt-6 mb-6">
+                    <RefreshIcon className="h-7 mx-auto" />
+                  </div>
+                }
+                dataLength={posts.length}
+                // end message is the component which will get displayed when no more posts to be fetched from backend
+              >
+                {posts.map((post) => (
+                  <PostCard
+                    key={post._id}
+                    post={post}
+                    user={user}
+                    setPosts={setPosts}
+                  />
+                ))}
+              </InfiniteScroll>
+            )
           ) : (
-            <InfiniteScroll
-              /* next is the function for fetching data from backend when the user reaches the end */
-              hasMore={hasMore}
-              next={fetchDataOnScroll}
-              loader={<Facebook />}
-              endMessage={
-                <div className="w-full mt-6 mb-6">
-                  <RefreshIcon className="h-7 mx-auto" />
-                </div>
-              }
-              dataLength={posts.length}
-              // end message is the component which will get displayed when no more posts to be fetched from backend
-            >
-              {posts.map((post) => (
-                <PostCard
-                  key={post._id}
-                  post={post}
-                  user={user}
-                  setPosts={setPosts}
-                />
-              ))}
-            </InfiniteScroll>
+            <Facebook />
           )}
         </div>
       </div>
