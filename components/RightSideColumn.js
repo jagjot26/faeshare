@@ -135,9 +135,7 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
           );
         })
       ) : (
-        <div className="min-h-40">
-          <Facebook></Facebook>
-        </div>
+        <Facebook />
       )}
       <Title>Recent chats</Title>
       <ChatContainerParent>
