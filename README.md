@@ -1,22 +1,7 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+I developed this fullstack social media web app because I wanted to hone my knowledge of the MERN stack along with Next.js. Initially, I decided to go with Next's default server option. Then, I discarded that and went with the custom Express server since that allowed me to use WebSockets (Socket.io in my case) in my app for realtime chats. Besides this, this is a simple social media web app. You can create a post, like it, follow other users, comment on posts, delete your post or comment, and so on and so forth. 
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Technologies used
+React, Next.js, Node.js, Express.js, MongoDB, Redux, Socket.io, TailwindCSS
 
 ## Learn More
 
