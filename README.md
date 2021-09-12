@@ -11,7 +11,11 @@ I developed this fullstack social media web app because I wanted to hone my know
 - Socket.io
 - TailwindCSS
 
-## Demo videos
+## Demonstration
+
+### Chat
+https://user-images.githubusercontent.com/51400182/133002502-b8f0c1ad-8e95-43e4-b042-9da3d75d318b.mov
+
 
 
 
