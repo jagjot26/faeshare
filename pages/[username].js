@@ -42,9 +42,7 @@ function ProfilePage({
   const coverImageRef = useRef(null);
   const profilePicRef = useRef(null);
   const [coverPic, setCoverPic] = useState(null);
-  const [coverPicPreview, setCoverPicPreview] = useState(
-    profile.user.coverPicUrl
-  );
+  const [coverPicPreview, setCoverPicPreview] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState(null);
   const [error, setError] = useState(null);
@@ -112,11 +110,7 @@ function ProfilePage({
 
   //coverPic
   useEffect(() => {
-    if (coverPic === null) {
-      return;
-    }
-
-    if (!isMountRef.current) {
+    if (coverPic === null || !isMountRef.current) {
       isMountRef.current = true;
       return;
     } else {
@@ -197,10 +191,7 @@ function ProfilePage({
             {coverPicPreview !== null ? (
               <CoverImage src={coverPicPreview} alt="cover pic" />
             ) : (
-              <CoverImage
-                src="https://images.pexels.com/photos/114979/pexels-photo-114979.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-                alt="cover pic"
-              />
+              <CoverImage src={profile.user.coverPicUrl} alt="cover pic" />
             )}
 
             <input

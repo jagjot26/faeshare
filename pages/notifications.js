@@ -50,7 +50,7 @@ function Notifications({ user, notifications, errorLoading, userFollowStats }) {
         style={{ height: "calc(100vh - 4.5rem)", overflowY: "auto" }}
       >
         <Sidebar user={user} />
-        <div className="flex-grow mx-auto max-w-md md:max-w-lg lg:max-w-2xl bg-white p-4 shadow-lg rounded-lg">
+        <div className="flex-grow mx-auto max-w-md md:max-w-lg lg:max-w-2xl bg-white p-4 shadow-lg rounded-lg overflow-y-auto">
           <div className="flex items-center ml-2">
             <Title>Notifications ·</Title>
             <NotificationCount className="text-gray-500 ml-2">

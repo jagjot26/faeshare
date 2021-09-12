@@ -45,7 +45,7 @@ function FollowersPage({ user, userFollowStats, followers, errorLoading }) {
         <Sidebar user={user} topDist={"0"} maxWidth={"250px"} />
         <div
           style={{ fontFamily: "Inter" }}
-          className="mx-auto h-full w-full flex-1 max-w-md md:max-w-xl   lg:max-w-[61.5rem] xl:max-w-[67rem] bg-white p-4 shadow-lg rounded-lg"
+          className="mx-auto h-full w-full flex-1 max-w-md md:max-w-xl lg:max-w-[61.5rem] xl:max-w-[67rem] bg-white p-4 shadow-lg rounded-lg overflow-y-auto"
         >
           <div className="flex items-center ml-2">
             <Title>Followers ·</Title>
