@@ -48,8 +48,8 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
 
   return (
     <ContainerDiv
-      className="hidden  p-2 mt-5 lg:block max-w-[300px] lg:min-w-[290px] xl:min-w-[300px] sticky xl:mr-8"
-      style={{ alignSelf: "flex-start", top: "4rem" }}
+      className="hidden  p-2 lg:block max-w-[300px] lg:min-w-[290px] xl:min-w-[300px] sticky xl:mr-8"
+      style={{ alignSelf: "flex-start", top: "5.45rem" }}
     >
       <Title>Who to follow</Title>
       {usersToFollow && usersToFollow.length > 0 ? (

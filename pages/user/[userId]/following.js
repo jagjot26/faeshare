@@ -20,6 +20,7 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
   const [followingArrayState, setFollowingArrayState] = useState(following);
   const [loggedUserFollowStats, setLoggedUserFollowStats] =
     useState(userFollowStats);
+  const [loading, setLoading] = useState(false);
 
   if (errorLoading) {
     return (
@@ -42,7 +43,7 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
           display: "flex",
         }}
       >
-        <Sidebar user={user} />
+        <Sidebar user={user} topDist={"0"} />
         <div
           style={{ fontFamily: "Inter" }}
           className="mx-auto h-full w-full flex-1 max-w-md md:max-w-xl lg:max-w-[61.5rem] xl:max-w-[67rem] bg-white p-4 shadow-lg rounded-lg"
@@ -84,7 +85,8 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
                           onClick={async () => {
                             await unfollowUser(
                               fol.user._id,
-                              setLoggedUserFollowStats
+                              setLoggedUserFollowStats,
+                              setLoading
                             );
                           }}
                         >
@@ -96,7 +98,8 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
                           onClick={async () => {
                             await followUser(
                               fol.user._id,
-                              setLoggedUserFollowStats
+                              setLoggedUserFollowStats,
+                              setLoading
                             );
                           }}
                         >
