@@ -59,4 +59,5 @@ export const logoutUser = (email, router) => {
   cookie.set("userEmail", email); //this cookie is set to auto set the email field next time the user is on /login page
   cookie.remove("token");
   router.push("/login");
+  router.reload();
 };

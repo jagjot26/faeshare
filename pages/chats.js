@@ -194,30 +194,33 @@ function ChatsPage({ user, chatsData }) {
     texts.length > 0 && scrollToBottom();
   }, [texts]);
 
-  // useEffect(() => {
-  //   const markMessagesAsRead = async () => {
-  //     try {
-  //       await axios.post(
-  //         `${baseUrl}/api/chats`,
-  //         {},
-  //         {
-  //           headers: { Authorization: cookie.get("token") },
-  //         }
-  //       );
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  useEffect(() => {
+    const markMessagesAsRead = async () => {
+      try {
+        await axios.post(
+          `${baseUrl}/api/chats`,
+          {},
+          {
+            headers: { Authorization: cookie.get("token") },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  //   markMessagesAsRead();
-  // }, []);
+    markMessagesAsRead();
+  }, []);
 
   return (
     <div className="bg-gray-100">
       <Header user={user} />
-      <main className="flex" style={{ height: "calc(100vh - 4.5rem)" }}>
+      <main
+        className="flex lg:space-x-6"
+        style={{ height: "calc(100vh - 4.5rem)" }}
+      >
         <Sidebar user={user} />
-        <div className="flex flex-grow h-full w-full mx-auto max-w-2xl lg:mx-10 lg:max-w-[65rem] xl:max-w-[70.5rem] bg-white  rounded-lg">
+        <div className="flex flex-grow h-full w-full mx-auto max-w-2xl lg:max-w-[65rem] xl:max-w-[70.5rem] bg-white  rounded-lg">
           <div
             style={{
               borderLeft: "1px solid lightgrey",

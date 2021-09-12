@@ -48,7 +48,7 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
 
   return (
     <ContainerDiv
-      className="hidden  p-2 mt-5 lg:block lg:min-w-[290px] xl:min-w-[300px] sticky"
+      className="hidden  p-2 mt-5 lg:block max-w-[300px] lg:min-w-[290px] xl:min-w-[300px] sticky xl:mr-8"
       style={{ alignSelf: "flex-start", top: "4rem" }}
     >
       <Title>Who to follow</Title>
@@ -179,7 +179,6 @@ function RightSideColumn({ user, chatsData, userFollowStats }) {
   );
 }
 
-//  HELLOOOOOOOOOOOOO
 export default RightSideColumn;
 
 const Title = styled.p`

@@ -35,6 +35,7 @@ function FollowingPage({ user, userFollowStats, following, errorLoading }) {
     <div className="bg-gray-100 h-screen">
       <Header user={user} />
       <main
+        className="space-x-6"
         style={{
           height: "calc(100vh - 4.5rem)",
           overflowY: "auto",

@@ -13,7 +13,7 @@ import SidebarRow from "./HelperComponents/SidebarRow";
 function Sidebar({ user }) {
   return (
     <div
-      className="p-2 max-w-[600px] xl:min-w-[300px] sticky"
+      className="p-2 max-w-[600px] xl:min-w-[300px] sticky xl:ml-6"
       style={{ alignSelf: "flex-start", top: "4rem", fontFamily: "Inter" }}
     >
       <SidebarRow
