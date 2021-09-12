@@ -16,6 +16,8 @@ I developed this fullstack social media web app because I wanted to hone my know
 ### Chat
 https://user-images.githubusercontent.com/51400182/133002502-b8f0c1ad-8e95-43e4-b042-9da3d75d318b.mov
 
+## User Profile
+https://user-images.githubusercontent.com/51400182/133002778-aaa5f139-2349-4ca2-a2cf-e8f601213b3c.mov
 
 
 
