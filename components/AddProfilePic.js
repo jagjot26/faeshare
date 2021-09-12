@@ -58,12 +58,11 @@ function AddProfilePic() {
       profilePicUrl = await uploadPic(media);
     }
 
-    console.log(profilePicUrl);
     //in case of error
     if (media !== null && !profilePicUrl) {
       return setErrorMessage("Error Uploading Image");
     }
-    console.log(profilePicUrl);
+
     console.log({ ...user, ...optionalDetails });
 
     await registerUser(
