@@ -37,7 +37,7 @@ router.post("/", authMiddleware, async (req, res) => {
     return res.json(postCreated); //returning post now just for testing
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -113,7 +113,7 @@ router.get("/", authMiddleware, async (req, res) => {
     return res.json(posts);
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -131,7 +131,7 @@ router.get("/:postId", authMiddleware, async (req, res) => {
     return res.json(post);
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -161,7 +161,7 @@ router.delete("/:postId", authMiddleware, async (req, res) => {
     return res.status(200).send("Post deleted successfully");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -195,7 +195,7 @@ router.post("/like/:postId", authMiddleware, async (req, res) => {
     return res.status(200).send("Post liked");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -229,7 +229,7 @@ router.put("/unlike/:postId", authMiddleware, async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -246,7 +246,7 @@ router.get("/like/:postId", authMiddleware, async (req, res) => {
     return res.status(200).json(post.likes);
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -288,7 +288,7 @@ router.post("/comment/:postId", authMiddleware, async (req, res) => {
     return res.status(200).json(newComment._id);
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -341,7 +341,7 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
     return res.status(200).send("Comment deleted successfully");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 

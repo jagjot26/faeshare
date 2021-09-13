@@ -39,7 +39,7 @@ router.get("/:username", authMiddleware, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -63,7 +63,7 @@ router.get("/posts/:username", authMiddleware, async (req, res) => {
     return res.json(posts);
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -80,7 +80,7 @@ router.get("/followers/:userId", authMiddleware, async (req, res) => {
     return res.json(user.followers); //only sending the followers array from the user model
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -97,7 +97,7 @@ router.get("/following/:userId", authMiddleware, async (req, res) => {
     return res.json(user.following); //only sending the following array from the user model
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -134,7 +134,7 @@ router.post("/follow/:userToFollowId", authMiddleware, async (req, res) => {
     return res.status(200).send("success");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -180,7 +180,7 @@ router.put("/unfollow/:userToUnfollowId", authMiddleware, async (req, res) => {
     return res.status(200).send("success");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -221,7 +221,7 @@ router.post("/update", authMiddleware, async (req, res) => {
     return res.status(200).send("Success");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -249,7 +249,7 @@ router.post("/updatepictures", authMiddleware, async (req, res) => {
     return res.status(200).send("Success");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
@@ -277,7 +277,7 @@ router.post("/settings/password", authMiddleware, async (req, res) => {
     return res.status(200).send("Updated");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 

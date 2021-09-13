@@ -75,7 +75,7 @@ router.post("/", authMiddleware, async (req, res) => {
     return res.status(200).send("Updated");
   } catch (error) {
     console.log(error);
-    return res.status().send("Server error");
+    return res.status(500).send("Server error");
   }
 });
 
