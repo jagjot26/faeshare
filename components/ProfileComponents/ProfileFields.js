@@ -16,7 +16,7 @@ const notifyError = () =>
   });
 
 function ProfileFields({ profile, isUserOnOwnAccount, newComp }) {
-  const [bio, setBio] = useState(profile.bio || "");
+  const [bio, setBio] = useState(profile.bio ? profile.bio : "");
   const [social, setSocial] = useState({
     youtube:
       profile.social && profile.social.youtube ? profile.social.youtube : "",

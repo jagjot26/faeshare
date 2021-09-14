@@ -8,6 +8,8 @@ const bcrypt = require("bcryptjs"); //to encrypt password
 const isEmail = require("validator/lib/isEmail");
 const authMiddleware = require("../middleware/authMiddleware");
 const ChatModel = require("../models/ChatModel");
+const ProfileModel = require("../models/ProfileModel");
+const NotificationModel = require("../models/NotificationModel");
 
 router.get("/", authMiddleware, async (req, res) => {
   const { userId } = req; //in the middleware we had req.userId = userId;
@@ -47,9 +49,27 @@ router.post("/", async (req, res) => {
     }
 
     const chatModel = await ChatModel.findOne({ user: user._id });
+    const profileModel = await ProfileModel.findOne({ user: user._id });
+    const followerModel = await FollowerModel.findOne({ user: user._id });
+    const notificationModel = await NotificationModel.findOne({
+      user: user._id,
+    });
 
     if (!chatModel) {
       await new ChatModel({ user: user._id, chats: [] }).save();
+    }
+    if (!profileModel) {
+      await new ProfileModel({ user: user._id }).save();
+    }
+    if (!followerModel) {
+      await new FollowerModel({
+        user: user._id,
+        followers: [],
+        following: [],
+      }).save();
+    }
+    if (!notificationModel) {
+      await new NotificationModel({ user: user._id, notifications: [] }).save();
     }
 
     //if isPassword is true i.e. passwords match, then we'll send back the jwt token
