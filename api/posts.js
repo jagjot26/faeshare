@@ -179,7 +179,7 @@ router.post("/like/:postId", authMiddleware, async (req, res) => {
       post.likes.filter((like) => like.user.toString() === userId).length > 0; //filter returns a new array with all the elements that pass the test
 
     if (isLiked) {
-      res.status(401).send("Post already liked");
+      return res.status(401).send("Post already liked");
     }
 
     await post.likes.unshift({ user: userId }); //adds new items to the beginning of the original array and returns the new length
@@ -214,7 +214,7 @@ router.put("/unlike/:postId", authMiddleware, async (req, res) => {
     );
 
     if (isLikedIndex === -1) {
-      res.status(400).send("Can't unlike a post that hasn't been liked");
+      return res.status(400).send("Can't unlike a post that hasn't been liked");
     } else {
       await post.likes.splice(isLikedIndex, 1); //delete that element
 

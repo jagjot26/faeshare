@@ -6,6 +6,7 @@ import { CheckCircleIcon, UserAddIcon } from "@heroicons/react/solid";
 import { followUser, unfollowUser } from "../../utils/profileActions";
 
 function FollowNotification({ notification, userFollowStats }) {
+  const [loading, setLoading] = useState(false);
   const [loggedInUserFollowStats, setLoggedInUserFollowStats] =
     useState(userFollowStats);
 
@@ -36,7 +37,8 @@ function FollowNotification({ notification, userFollowStats }) {
             onClick={async () => {
               await unfollowUser(
                 notification.user._id,
-                setLoggedInUserFollowStats
+                setLoggedInUserFollowStats,
+                setLoading
               );
             }}
           >
@@ -48,7 +50,8 @@ function FollowNotification({ notification, userFollowStats }) {
             onClick={async () => {
               await followUser(
                 notification.user._id,
-                setLoggedInUserFollowStats
+                setLoggedInUserFollowStats,
+                setLoading
               );
             }}
           >
