@@ -60,12 +60,14 @@ function AddProfilePic() {
 
     //in case of error
     if (media !== null && !profilePicUrl) {
+      setLoading(false);
       return setErrorMessage("Error Uploading Image");
     }
 
     console.log({ ...user, ...optionalDetails });
 
     if (bio === "") {
+      setLoading(false);
       return setErrorMessage("Please enter a bio");
     }
 
