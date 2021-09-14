@@ -65,6 +65,10 @@ function AddProfilePic() {
 
     console.log({ ...user, ...optionalDetails });
 
+    if (bio === "") {
+      return setErrorMessage("Please enter a bio");
+    }
+
     await registerUser(
       { ...user, ...optionalDetails },
       profilePicUrl,
