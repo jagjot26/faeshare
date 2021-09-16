@@ -22,7 +22,7 @@ https://user-images.githubusercontent.com/51400182/133002502-b8f0c1ad-8e95-43e4-
 ### User Profile
 https://user-images.githubusercontent.com/51400182/133003152-722af7bf-a6f2-4777-9cab-5d96cf012af9.mov
 
-##Screenshots
+## Screenshots
 
 <img width="1440" alt="Screenshot 2021-09-16 at 10 32 01 AM" src="https://user-images.githubusercontent.com/51400182/133553192-d724888e-4c20-45ae-9af3-de0ab0810e51.png">
 <img width="1440" alt="Screenshot 2021-09-16 at 10 33 26 AM" src="https://user-images.githubusercontent.com/51400182/133553200-b48f6284-7716-4155-babb-b673cb255b51.png">
