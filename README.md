@@ -17,13 +17,13 @@ Please give this repository a ⭐ if you liked this app. It seems like a little 
 
 ## Demonstration
 
-- Overall app demo
+### Overall app demo
 https://user-images.githubusercontent.com/51400182/133003632-d65d3a58-46ee-46e7-b4a7-d5e73b6930c2.mov
 
-- Chat
+### Chat
 https://user-images.githubusercontent.com/51400182/133002502-b8f0c1ad-8e95-43e4-b042-9da3d75d318b.mov
 
-- User Profile
+### User Profile
 https://user-images.githubusercontent.com/51400182/133003152-722af7bf-a6f2-4777-9cab-5d96cf012af9.mov
 
 ## Screenshots
