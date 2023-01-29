@@ -1,16 +1,16 @@
 const express = require("express");
 const app = express();
-//() is used to initialise app
+const cors = require("cors")
 const server = require("http").Server(app);
 // const io = require("socket.io")(server); //socket.io import for server
 const next = require("next");
-const dev = process.env.NODE_ENV !== "production"; //check the implementation docs on nextjs website to know more
-const nextApp = next({ dev }); //nextApp will tell next if the app is in development or production mode
+const dev = process.env.NODE_ENV !== "production";
+const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 require("dotenv").config({ path: "./config.env" });
 const connectDb = require("./utilsServer/connectDb");
-const PORT = process.env.PORT || 3000; //when the app will be deployed to Heroku, Heroku auto adds the port in env variables
-const io = require("socket.io")(server); //socket.io import for server
+const PORT = process.env.PORT || 3000;
+const io = require("socket.io")(server);
 const {
   addUser,
   removeUser,
@@ -24,17 +24,23 @@ const {
 } = require("./utils/messageActions");
 
 connectDb();
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
 app.use(express.json()); //bodyparser- used basically for getting req.body in a good format
 //In next js, server an app both run on the same port, i.e. port 3000
 // we don't need two separate ports for frontend and backend
-
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
 
 io.on("connection", (socket) => {
   //socket is basically the client who's connected to this
