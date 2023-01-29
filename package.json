@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "NODE_ENV=production node server.js NODE_OPTIONS=--max_old_space_size=4096",
     "lint": "next lint"
   },
   "dependencies": {
