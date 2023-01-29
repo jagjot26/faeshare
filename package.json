@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon server.js",
-    "build": "NODE_OPTIONS=\"--max_old_space_size=4096\" next build",
+    "build": "NODE_OPTIONS=\"--max_old_space_size=2048\" next build",
     "start": "NODE_ENV=production node server.js --max_old_space_size=4096",
     "lint": "next lint"
   },
