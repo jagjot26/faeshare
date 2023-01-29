@@ -8,7 +8,7 @@ module.exports = {
     production : {
       key: 'faeshare-server-key.pem',
       user : 'ubuntu',
-      host : '52.87.219.225',
+      host : '54.208.111.234',
       ref  : 'origin/main',
       repo : 'git@github.com:Jagjot26/faeshare.git',
       path : '/home/ubuntu',
