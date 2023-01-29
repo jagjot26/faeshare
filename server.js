@@ -28,6 +28,14 @@ app.use(express.json()); //bodyparser- used basically for getting req.body in a 
 //In next js, server an app both run on the same port, i.e. port 3000
 // we don't need two separate ports for frontend and backend
 
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 io.on("connection", (socket) => {
   //socket is basically the client who's connected to this
   //socket.on is used to listen to the event and receive the data on the server or the client
